@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SENTRI - Anomaly History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#0e141c",
+                        "on-tertiary-fixed": "#410001",
+                        "surface-container-low": "#171c25",
+                        "secondary-fixed-dim": "#abc8f4",
+                        "on-tertiary": "#680104",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#f0a73b",
+                        "surface-container": "#1b2029",
+                        "on-tertiary-container": "#891c17",
+                        "surface-container-high": "#252a33",
+                        "secondary-fixed": "#d3e3ff",
+                        "on-primary-container": "#643f00",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#845400",
+                        "primary": "#ffc77f",
+                        "on-surface-variant": "#d6c3af",
+                        "on-secondary-fixed-variant": "#2a486d",
+                        "on-tertiary-fixed-variant": "#891c17",
+                        "primary-fixed-dim": "#ffb958",
+                        "primary-fixed": "#ffddb5",
+                        "surface-tint": "#ffb958",
+                        "tertiary": "#ffc2bb",
+                        "tertiary-fixed": "#ffdad5",
+                        "on-secondary-container": "#9ab7e2",
+                        "on-primary-fixed": "#2a1800",
+                        "inverse-on-surface": "#2c313a",
+                        "secondary-container": "#2a486d",
+                        "on-primary": "#462b00",
+                        "error": "#ffb4ab",
+                        "background": "#0e141c",
+                        "on-primary-fixed-variant": "#643f00",
+                        "on-error": "#690005",
+                        "surface-variant": "#30353e",
+                        "surface-container-highest": "#30353e",
+                        "surface-bright": "#343943",
+                        "outline": "#9f8e7c",
+                        "on-background": "#dee2ef",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "surface-dim": "#0e141c",
+                        "outline-variant": "#514535",
+                        "tertiary-container": "#ff9a8e",
+                        "on-surface": "#dee2ef",
+                        "on-secondary-fixed": "#001c39",
+                        "secondary": "#abc8f4",
+                        "surface-container-lowest": "#090e17",
+                        "on-secondary": "#103155",
+                        "inverse-surface": "#dee2ef"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "margin-desktop": "32px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px"
+                    },
+                    fontFamily: {
+                        "display-lg-mobile": ["Space Grotesk"],
+                        "body-lg": ["IBM Plex Sans"],
+                        "data-mono": ["IBM Plex Mono"],
+                        "label-caps": ["IBM Plex Mono"],
+                        "headline-md": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "body-md": ["IBM Plex Sans"]
+                    },
+                    fontSize: {
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "data-mono": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .ticket-notch {
+            clip-path: polygon(0 0, 100% 0, 100% calc(50% - 6px), calc(100% - 6px) 50%, 100% calc(50% + 6px), 100% 100%, 0 100%);
+        }
+        .chamfer-tr {
+            clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="flex items-center justify-between px-margin-mobile h-16 w-full bg-surface border-b border-outline-variant fixed top-0 z-50">
+<button aria-label="Shield" class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 transition-transform flex items-center justify-center w-10 h-10">
+<span class="material-symbols-outlined">shield</span>
+</button>
+<h1 class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-primary">SENTRI</h1>
+<button aria-label="Notifications" class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 transition-transform flex items-center justify-center w-10 h-10">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 pt-24 pb-32 px-margin-mobile w-full max-w-container-max mx-auto">
+<!-- Context Header -->
+<div class="mb-8 flex flex-col gap-2">
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Anomaly History</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Log of flagged events and system irregularities.</p>
+</div>
+<!-- Tactical Overview Bento -->
+<div class="grid grid-cols-2 gap-unit mb-8">
+<div class="bg-surface-container border border-secondary-container p-4 flex flex-col gap-2 chamfer-tr">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Pending Review</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-error">03</span>
+</div>
+<div class="bg-surface-container border border-secondary-container p-4 flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Resolved (30d)</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">14</span>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+<button class="bg-primary-container text-on-primary-container font-label-caps text-label-caps px-4 py-2 uppercase tracking-widest whitespace-nowrap">All Logs</button>
+<button class="border border-secondary-container text-on-surface-variant font-label-caps text-label-caps px-4 py-2 uppercase tracking-widest hover:text-primary transition-colors whitespace-nowrap">Critical</button>
+<button class="border border-secondary-container text-on-surface-variant font-label-caps text-label-caps px-4 py-2 uppercase tracking-widest hover:text-primary transition-colors whitespace-nowrap">Resolved</button>
+</div>
+<!-- Dispatch-Ticket Rows -->
+<div class="flex flex-col gap-unit">
+<!-- Ticket 1: Critical/Pending -->
+<article class="relative bg-surface-container border border-secondary-container flex ticket-notch overflow-hidden">
+<!-- Status Accent Bar -->
+<div class="w-1 bg-error-container shrink-0"></div>
+<div class="flex-1 p-4 flex flex-col gap-3">
+<header class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="font-data-mono text-data-mono text-error">ID: #AX-9942</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Oct 28, 04:15 AM</span>
+</div>
+<div class="flex items-center gap-1 border border-error-container/30 bg-error-container/10 px-2 py-1">
+<span class="material-symbols-outlined text-[14px] text-error">warning</span>
+<span class="font-label-caps text-label-caps text-error uppercase">Pending</span>
+</div>
+</header>
+<p class="font-body-md text-body-md text-on-surface leading-tight">
+                        Unrecognized heat signature detected near perimeter sector 7 during automated patrol sequence.
+                    </p>
+</div>
+</article>
+<!-- Ticket 2: Resolved -->
+<article class="relative bg-surface-container border border-secondary-container flex ticket-notch overflow-hidden opacity-80 hover:opacity-100 transition-opacity">
+<div class="w-1 bg-secondary-container shrink-0"></div>
+<div class="flex-1 p-4 flex flex-col gap-3">
+<header class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="font-data-mono text-data-mono text-on-surface">ID: #AX-9918</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Oct 26, 22:30 PM</span>
+</div>
+<div class="flex items-center gap-1 border border-secondary-container px-2 py-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">check_circle</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Resolved</span>
+</div>
+</header>
+<p class="font-body-md text-body-md text-on-surface-variant leading-tight">
+                        Communication link with drone unit Delta dropped for 45 seconds due to atmospheric interference. Connection restored automatically.
+                    </p>
+</div>
+</article>
+<!-- Ticket 3: Resolved -->
+<article class="relative bg-surface-container border border-secondary-container flex ticket-notch overflow-hidden opacity-80 hover:opacity-100 transition-opacity">
+<div class="w-1 bg-secondary-container shrink-0"></div>
+<div class="flex-1 p-4 flex flex-col gap-3">
+<header class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="font-data-mono text-data-mono text-on-surface">ID: #AX-9884</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Oct 24, 09:12 AM</span>
+</div>
+<div class="flex items-center gap-1 border border-secondary-container px-2 py-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">check_circle</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Resolved</span>
+</div>
+</header>
+<p class="font-body-md text-body-md text-on-surface-variant leading-tight">
+                        Unexpected motion registered in storage bay B. Visual confirmation determined cause to be localized pressure venting.
+                    </p>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-full backdrop-blur-md bg-surface-container/90 border border-outline-variant shadow-lg flex justify-around items-center py-2 px-4 z-50">
+<button class="text-on-surface-variant p-3 hover:text-primary active:scale-110 duration-200 transition-all flex items-center justify-center">
+<span class="material-symbols-outlined">home</span>
+</button>
+<!-- Active Tab: Analytics maps best to History/Logs -->
+<button class="bg-primary text-on-primary rounded-full p-3 active:scale-110 duration-200 transition-all flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</button>
+<button class="text-on-surface-variant p-3 hover:text-primary active:scale-110 duration-200 transition-all flex items-center justify-center">
+<span class="material-symbols-outlined">speed</span>
+</button>
+<button class="text-on-surface-variant p-3 hover:text-primary active:scale-110 duration-200 transition-all flex items-center justify-center">
+<span class="material-symbols-outlined">person</span>
+</button>
+</nav>
+</body></html>

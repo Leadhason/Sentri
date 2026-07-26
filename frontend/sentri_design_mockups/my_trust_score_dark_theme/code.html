@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trust Score - SENTRI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#0e141c",
+                        "on-tertiary-fixed": "#410001",
+                        "surface-container-low": "#171c25",
+                        "secondary-fixed-dim": "#abc8f4",
+                        "on-tertiary": "#680104",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#f0a73b",
+                        "surface-container": "#1b2029",
+                        "on-tertiary-container": "#891c17",
+                        "surface-container-high": "#252a33",
+                        "secondary-fixed": "#d3e3ff",
+                        "on-primary-container": "#643f00",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#845400",
+                        "primary": "#ffc77f",
+                        "on-surface-variant": "#d6c3af",
+                        "on-secondary-fixed-variant": "#2a486d",
+                        "on-tertiary-fixed-variant": "#891c17",
+                        "primary-fixed-dim": "#ffb958",
+                        "primary-fixed": "#ffddb5",
+                        "surface-tint": "#ffb958",
+                        "tertiary": "#ffc2bb",
+                        "tertiary-fixed": "#ffdad5",
+                        "on-secondary-container": "#9ab7e2",
+                        "on-primary-fixed": "#2a1800",
+                        "inverse-on-surface": "#2c313a",
+                        "secondary-container": "#2a486d",
+                        "on-primary": "#462b00",
+                        "error": "#ffb4ab",
+                        "background": "#0e141c",
+                        "on-primary-fixed-variant": "#643f00",
+                        "on-error": "#690005",
+                        "surface-variant": "#30353e",
+                        "surface-container-highest": "#30353e",
+                        "surface-bright": "#343943",
+                        "outline": "#9f8e7c",
+                        "on-background": "#dee2ef",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "surface-dim": "#0e141c",
+                        "outline-variant": "#514535",
+                        "tertiary-container": "#ff9a8e",
+                        "on-surface": "#dee2ef",
+                        "on-secondary-fixed": "#001c39",
+                        "secondary": "#abc8f4",
+                        "surface-container-lowest": "#090e17",
+                        "on-secondary": "#103155",
+                        "inverse-surface": "#dee2ef"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "margin-desktop": "32px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Space Grotesk"],
+                        "body-lg": ["IBM Plex Sans"],
+                        "data-mono": ["IBM Plex Mono"],
+                        "label-caps": ["IBM Plex Mono"],
+                        "headline-md": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "body-md": ["IBM Plex Sans"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            min-height: max(884px, 100dvh);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Tactical Modernism Structural Classes */
+        .tactical-panel {
+            background-color: theme('colors.surface-container');
+            border: 1px solid theme('colors.secondary-container');
+        }
+        .tactical-border-bottom {
+            border-bottom: 1px solid theme('colors.secondary-container');
+        }
+        .notch-top-bottom {
+            position: relative;
+        }
+        .notch-top-bottom::before, .notch-top-bottom::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 4px;
+            background-color: theme('colors.background');
+            border: 1px solid theme('colors.secondary-container');
+            border-top: none;
+            right: 16px;
+        }
+        .notch-top-bottom::before {
+            top: 0;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        .notch-top-bottom::after {
+            bottom: 0;
+            border-top: none;
+            border-bottom: 1px solid theme('colors.secondary-container');
+            transform: rotate(180deg);
+        }
+        
+        /* Circular Gauge Animation */
+        .gauge-circle {
+            transition: stroke-dasharray 1.5s ease-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-body-md antialiased pb-24 md:pb-0 bg-background text-on-background">
+<!-- TopAppBar -->
+<header class="bg-background text-primary font-headline-md text-headline-md full-width top-0 border-b border-outline-variant">
+<div class="flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 w-full max-w-container-max mx-auto relative">
+<button aria-label="shield" class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 transition-transform p-2 -ml-2">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+</button>
+<h1 class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-primary absolute left-1/2 -translate-x-1/2">SENTRI</h1>
+<button aria-label="notifications" class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 transition-transform p-2 -mr-2">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 flex flex-col gap-8 bg-background">
+<!-- Trust Score Header Section -->
+<section class="flex flex-col items-center justify-center space-y-2">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Operative Status</h2>
+<div class="flex items-center gap-2 text-primary-container">
+<span class="material-symbols-outlined filled text-[12px]">fiber_manual_record</span>
+<span class="font-data-mono text-data-mono">CLEARANCE LEVEL 4</span>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Main Gauge Panel - Takes full width on mobile, spans 8 cols on desktop -->
+<div class="md:col-span-8 tactical-panel p-8 flex flex-col items-center justify-center relative overflow-hidden" style="border-top-right-radius: 32px;">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-8">Trust Score</h3>
+<!-- Circular Gauge SVG -->
+<div class="relative w-64 h-64 flex items-center justify-center mb-8">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background Circle -->
+<circle class="text-surface-variant" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="8"></circle>
+<!-- Progress Circle (98%) -->
+<circle class="text-primary-container gauge-circle" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="277 283" stroke-linecap="butt" stroke-width="8"></circle>
+</svg>
+<!-- Score Text -->
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary-container leading-none">98</span>
+<span class="font-data-mono text-data-mono text-on-surface-variant mt-1">/ 100</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-center max-w-md">
+                    Your Trust Score is based on reliability, client feedback, and incident resolution.
+                </p>
+</div>
+<!-- Side Panels Container -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Metrics Breakdown -->
+<div class="tactical-panel p-6 flex flex-col gap-6">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant pb-2">Component Metrics</h4>
+<div class="flex flex-col gap-4">
+<!-- Metric 1 -->
+<div>
+<div class="flex justify-between font-data-mono text-data-mono mb-1">
+<span class="text-on-surface">RELIABILITY</span>
+<span class="text-primary-container">99%</span>
+</div>
+<div class="h-1 w-full bg-surface-variant">
+<div class="h-full bg-primary-container" style="width: 99%"></div>
+</div>
+</div>
+<!-- Metric 2 -->
+<div>
+<div class="flex justify-between font-data-mono text-data-mono mb-1">
+<span class="text-on-surface">CLIENT FEEDBACK</span>
+<span class="text-primary-container">95%</span>
+</div>
+<div class="h-1 w-full bg-surface-variant">
+<div class="h-full bg-primary-container" style="width: 95%"></div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div>
+<div class="flex justify-between font-data-mono text-data-mono mb-1">
+<span class="text-on-surface">INCIDENT RESOLUTION</span>
+<span class="text-primary-container">100%</span>
+</div>
+<div class="h-1 w-full bg-surface-variant">
+<div class="h-full bg-primary-container" style="width: 100%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Improvement Tips -->
+<div class="tactical-panel p-6 flex flex-col gap-4 flex-grow">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant pb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">lightbulb</span>
+                        Optimization Directives
+                    </h4>
+<ul class="flex flex-col gap-3 font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary-container text-[18px] mt-0.5">check_circle</span>
+<span>Maintain current response times to ensure 100% resolution rate.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary-container text-[18px] mt-0.5">check_circle</span>
+<span>Client feedback is stable; prompt post-incident debriefs recommended.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden bg-surface-container/90 fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-full backdrop-blur-md border border-outline-variant shadow-lg z-50 flex justify-around items-center py-2 px-4 font-label-caps text-label-caps">
+<a class="flex flex-col items-center justify-center p-3 text-on-surface-variant hover:text-primary transition-all active:scale-110 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+</a>
+<a class="flex flex-col items-center justify-center p-3 text-on-surface-variant hover:text-primary transition-all active:scale-110 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
+</a>
+<a class="flex flex-col items-center justify-center p-3 bg-primary text-on-primary rounded-full hover:text-primary transition-all active:scale-110 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="speed">speed</span>
+</a>
+<a class="flex flex-col items-center justify-center p-3 text-on-surface-variant hover:text-primary transition-all active:scale-110 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+</a>
+</nav>
+<script>
+        // Trigger gauge animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const gauge = document.querySelector('.gauge-circle');
+            if (gauge) {
+                // Force reflow
+                void gauge.offsetWidth;
+                gauge.style.strokeDasharray = '277 283'; // 98% of 283 (circumference)
+            }
+        });
+    </script>
+</body></html>

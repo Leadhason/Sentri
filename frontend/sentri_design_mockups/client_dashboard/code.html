@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#9ab7e2",
+                        "surface": "#0e141c",
+                        "on-background": "#dee2ef",
+                        "on-tertiary": "#680104",
+                        "secondary-fixed": "#d3e3ff",
+                        "surface-container-highest": "#30353e",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#891c17",
+                        "on-primary-fixed": "#2a1800",
+                        "on-tertiary-fixed": "#410001",
+                        "on-surface-variant": "#d6c3af",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#ffb958",
+                        "primary-fixed": "#ffddb5",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#0e141c",
+                        "on-primary-container": "#643f00",
+                        "background": "#0e141c",
+                        "on-secondary": "#103155",
+                        "surface-bright": "#343943",
+                        "surface-container-high": "#252a33",
+                        "outline": "#9f8e7c",
+                        "surface-container-low": "#171c25",
+                        "surface-container": "#1b2029",
+                        "on-secondary-fixed": "#001c39",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#ff9a8e",
+                        "outline-variant": "#514535",
+                        "secondary": "#abc8f4",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "tertiary": "#ffc2bb",
+                        "surface-tint": "#ffb958",
+                        "on-surface": "#dee2ef",
+                        "inverse-primary": "#845400",
+                        "on-secondary-fixed-variant": "#2a486d",
+                        "on-primary-fixed-variant": "#643f00",
+                        "primary": "#ffc77f",
+                        "on-primary": "#462b00",
+                        "tertiary-fixed": "#ffdad5",
+                        "surface-variant": "#30353e",
+                        "inverse-surface": "#dee2ef",
+                        "surface-container-lowest": "#090e17",
+                        "primary-container": "#f0a73b",
+                        "secondary-fixed-dim": "#abc8f4",
+                        "secondary-container": "#2a486d",
+                        "inverse-on-surface": "#2c313a",
+                        "on-tertiary-container": "#891c17"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["IBM Plex Mono"],
+                        "display-lg": ["Space Grotesk"],
+                        "data-mono": ["IBM Plex Mono"],
+                        "body-md": ["IBM Plex Sans"],
+                        "display-lg-mobile": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-lg": ["IBM Plex Sans"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "data-mono": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    }catch(_e){}</script></head><body class="font-body-md text-body-md min-h-screen flex flex-col pb-24 md:pb-0">
+
+    <!-- TopAppBar -->
+    <header class="bg-surface text-primary font-headline-md text-headline-md docked full-width top-0 border-b border-outline-variant flat no shadows flex justify-between items-center px-margin-mobile h-16 w-full z-50 sticky md:static">
+        <button class="text-primary hover:text-primary transition-colors active:scale-95 duration-100 flex items-center justify-center p-2">
+            <span class="material-symbols-outlined">shield</span>
+        </button>
+        <h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg tracking-tighter text-primary uppercase font-bold absolute left-1/2 -translate-x-1/2">SENTRI</h1>
+        <button class="text-primary hover:text-primary transition-colors active:scale-95 duration-100 flex items-center justify-center p-2">
+            <span class="material-symbols-outlined" data-original-icon="notifications">notifications</span>
+        </button>
+    </header>
+
+    <main class="flex-grow flex flex-col px-margin-mobile md:px-margin-desktop py-gutter gap-margin-mobile md:gap-margin-desktop max-w-container-max mx-auto w-full">
+
+        <!-- Hero Panel -->
+        <section class="bg-surface-container border border-[#2D3748] rounded p-6 md:p-8 chamfer-tr flex flex-col justify-between relative overflow-hidden min-h-[200px]">
+            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#3D5A80 1px, transparent 1px); background-size: 16px 16px;"></div>
+            
+            <div class="relative z-10 flex flex-col h-full justify-between gap-6">
+                <div>
+                    <h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Active Jobs</h2>
+                </div>
+                <div class="flex items-end justify-between">
+                    <span class="font-display-lg text-display-lg md:text-[96px] md:leading-[1] font-bold text-on-background tracking-tighter">2</span>
+                    <span class="material-symbols-outlined text-[#3D5A80] text-4xl" style="font-variation-settings: 'FILL' 1;">radar</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Primary Action Card -->
+        <section class="bg-surface-container border border-[#3D5A80] rounded p-6 flex flex-col gap-4 relative overflow-hidden group cursor-pointer active:scale-[0.99] transition-transform">
+            <div class="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-primary-container/10 to-transparent pointer-events-none"></div>
+            
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full border border-primary-container flex items-center justify-center text-primary-container group-hover:bg-primary-container group-hover:text-[#12151A] transition-colors">
+                        <span class="material-symbols-outlined">add</span>
+                    </div>
+                    <div>
+                        <h3 class="font-headline-md text-headline-md text-on-background">Start New Assessment</h3>
+                        <p class="font-data-mono text-data-mono text-on-surface-variant mt-1">3 credits remaining</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-outline-variant group-hover:text-primary-container transition-colors">arrow_forward</span>
+            </div>
+        </section>
+
+        <!-- Recent Activity List -->
+        <section class="flex flex-col gap-unit mt-4">
+            <h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2 px-2">Recent Activity</h3>
+            
+            <div class="flex flex-col gap-2">
+                <!-- Dispatch-Ticket Row 1: Active (Ember) -->
+                <div class="bg-surface-container border border-[#3D5A80] p-4 flex items-center gap-4 ticket-notch relative hover:bg-surface-container-high transition-colors cursor-pointer">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-[#F0A73B]"></div>
+                    
+                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[#F0A73B]" style="font-variation-settings: 'FILL' 1;">emergency</span>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col gap-1">
+                        <div class="flex justify-between items-baseline">
+                            <span class="font-data-mono text-data-mono font-bold text-on-background">JOB-904A</span>
+                            <span class="font-label-caps text-[10px] text-on-surface-variant">14:02Z</span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant line-clamp-1 text-sm">Site Delta Perimeter Sweep</p>
+                    </div>
+                </div>
+
+                <!-- Dispatch-Ticket Row 2: Pending (Steel) -->
+                <div class="bg-surface-container border border-[#3D5A80] p-4 flex items-center gap-4 ticket-notch relative hover:bg-surface-container-high transition-colors cursor-pointer opacity-80">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-[#3D5A80]"></div>
+                    
+                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[#3D5A80]">hourglass_empty</span>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col gap-1">
+                        <div class="flex justify-between items-baseline">
+                            <span class="font-data-mono text-data-mono font-bold text-on-background">JOB-905B</span>
+                            <span class="font-label-caps text-[10px] text-on-surface-variant">PENDING</span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant line-clamp-1 text-sm">Asset Verification - Route C</p>
+                    </div>
+                </div>
+                 <!-- Dispatch-Ticket Row 3: Completed (Steel) -->
+                 <div class="bg-surface-container border border-[#3D5A80] p-4 flex items-center gap-4 ticket-notch relative hover:bg-surface-container-high transition-colors cursor-pointer opacity-50">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-surface-variant"></div>
+                    
+                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-surface-variant">check_circle</span>
+                    </div>
+                    
+                    <div class="flex-grow flex flex-col gap-1">
+                        <div class="flex justify-between items-baseline">
+                            <span class="font-data-mono text-data-mono font-bold text-on-surface-variant line-through">JOB-901X</span>
+                            <span class="font-label-caps text-[10px] text-surface-variant">08:15Z</span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant line-clamp-1 text-sm">Initial Setup Config</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- BottomNavBar (Mobile Only) -->
+    <nav class="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[90%] rounded-full backdrop-blur-md bg-surface-container/90 border border-outline-variant shadow-lg z-50 flex justify-around items-center py-3 px-6">
+        <button class="flex flex-col items-center justify-center text-primary hover:text-primary-fixed-dim active:scale-90 transition-transform">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home_max</span>
+            <span class="font-label-caps text-label-caps mt-1">Home</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed-dim active:scale-90 transition-transform">
+            </button></nav></body></html>

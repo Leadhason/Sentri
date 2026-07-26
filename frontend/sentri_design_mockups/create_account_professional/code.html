@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sentri - Create Account</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#ffdad5",
+                        "tertiary": "#ffc2bb",
+                        "on-primary-fixed": "#2a1800",
+                        "on-tertiary-container": "#891c17",
+                        "on-secondary-fixed-variant": "#2a486d",
+                        "inverse-on-surface": "#2c313a",
+                        "surface": "#0e141c",
+                        "error-container": "#93000a",
+                        "background": "#0e141c",
+                        "outline": "#9f8e7c",
+                        "surface-container-low": "#171c25",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "surface-dim": "#0e141c",
+                        "outline-variant": "#514535",
+                        "on-tertiary-fixed-variant": "#891c17",
+                        "on-surface": "#dee2ef",
+                        "on-secondary-fixed": "#001c39",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#2a486d",
+                        "on-secondary-container": "#9ab7e2",
+                        "surface-bright": "#343943",
+                        "primary-container": "#f0a73b",
+                        "surface-container-lowest": "#090e17",
+                        "surface-tint": "#ffb958",
+                        "primary-fixed-dim": "#ffb958",
+                        "inverse-primary": "#845400",
+                        "on-secondary": "#103155",
+                        "secondary-fixed": "#d3e3ff",
+                        "primary": "#ffc77f",
+                        "on-background": "#dee2ef",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#30353e",
+                        "on-primary": "#462b00",
+                        "on-surface-variant": "#d6c3af",
+                        "secondary-fixed-dim": "#abc8f4",
+                        "on-error": "#690005",
+                        "inverse-surface": "#dee2ef",
+                        "surface-container-high": "#252a33",
+                        "surface-container-highest": "#30353e",
+                        "surface-container": "#1b2029",
+                        "tertiary-container": "#ff9a8e",
+                        "primary-fixed": "#ffddb5",
+                        "on-primary-fixed-variant": "#643f00",
+                        "secondary": "#abc8f4",
+                        "on-primary-container": "#643f00",
+                        "on-tertiary-fixed": "#410001",
+                        "on-tertiary": "#680104"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "display-lg-mobile": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "data-mono": ["IBM Plex Mono"],
+                        "body-md": ["IBM Plex Sans"],
+                        "label-caps": ["IBM Plex Mono"],
+                        "body-lg": ["IBM Plex Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "data-mono": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #12151A; /* Void */
+            color: #dee2ef;
+        }
+        /* Custom Input Styles overriding Tailwind forms */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"] {
+            background-color: transparent !important;
+            border: none !important;
+            border-bottom: 1px solid #3D5A80 !important;
+            border-radius: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            color: #dee2ef !important;
+            font-family: 'IBM Plex Sans', sans-serif !important;
+        }
+        input:focus {
+            box-shadow: none !important;
+            border-bottom-color: #F0A73B !important;
+            outline: none !important;
+        }
+        
+        .chamfer-top-right {
+            clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-margin-mobile md:p-margin-desktop font-body-md antialiased">
+<!-- Top Navigation (Suppressed for transactional screen, but maintaining brand presence) -->
+<header class="fixed top-0 left-0 w-full flex justify-between items-center px-margin-mobile py-unit z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps tracking-widest text-primary">SENTRI_OPS</span>
+</div>
+<div>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Return to Portal</a>
+</div>
+</header>
+<main class="w-full max-w-md mt-16">
+<!-- Main Form Panel -->
+<div class="bg-[#1B2029] border border-[#2D3748] p-8 md:p-10 chamfer-top-right relative">
+<!-- Branding / Header -->
+<div class="mb-8">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Join our team</h1>
+<div class="flex items-center justify-between mt-4 pb-4 border-b border-[#2D3748]">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">security</span>
+<span class="font-data-mono text-data-mono">Joining as a Guard</span>
+</div>
+<a class="font-data-mono text-data-mono text-secondary hover:text-primary transition-colors underline decoration-[#3D5A80] underline-offset-4" href="#">Change role</a>
+</div>
+</div>
+<!-- Form -->
+<form action="#" class="space-y-6" method="POST">
+<!-- Full Name -->
+<div class="flex flex-col">
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase" for="fullName">Full Name</label>
+<input class="w-full text-body-lg" id="fullName" name="fullName" placeholder="John Doe" required="" type="text"/>
+</div>
+<!-- Email -->
+<div class="flex flex-col">
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase" for="email">Email Address</label>
+<input class="w-full text-body-lg" id="email" name="email" placeholder="johndoe@example.com" required="" type="email"/>
+</div>
+<!-- Phone -->
+<div class="flex flex-col">
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase" for="phone">Phone Number</label>
+<input class="w-full text-body-lg" id="phone" name="phone" placeholder="+1 (555) 000-0000" required="" type="tel"/>
+</div>
+<!-- Password -->
+<div class="flex flex-col">
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase" for="password">Password</label>
+<input class="w-full text-body-lg" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+<!-- Action Button -->
+<div class="pt-6">
+<button class="w-full bg-[#F0A73B] text-black font-label-caps text-label-caps uppercase tracking-widest py-4 px-6 hover:bg-[#ffb958] transition-colors flex justify-center items-center gap-2 rounded-none" type="submit">
+<span>Sign Up</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Footer Links -->
+<div class="mt-8 text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Already have an account? 
+                    <a class="text-primary hover:text-primary-fixed transition-colors font-medium ml-1" href="#">Log in</a>
+</p>
+</div>
+</div>
+<!-- Subtle Background Decorative Element -->
+<div class="fixed top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-surface-container-high/20 to-transparent -z-10 pointer-events-none"></div>
+</main>
+<!-- Bottom Nav & FAB strictly suppressed due to linear transactional nature of this screen -->
+</body></html>

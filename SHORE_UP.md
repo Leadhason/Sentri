@@ -128,3 +128,63 @@ This log lists all placeholders, security configurations, missing integrations, 
 33. **Map.of Constraints & Type Inference**:
     - *Requirement*: Avoid using Java's `Map.of` with more than 10 entries (limit of `Map.of` overloading). Use a builder or `LinkedHashMap` for larger sets.
     - *Requirement*: Explicitly parameterize `Map.<String, Object>of` within stream mapping collectors that compile into `List<Map<String, Object>>` to prevent compilation failures due to invariant generics type mismatch in Java.
+
+## [2026-07-21] Session 7: Frontend Design System & Infrastructure Foundation
+
+### 🔒 Security & Auth Gaps
+34. **Supabase Auth Client Integration**: Session state currently uses mock authentication token handling in `AuthContext.tsx`.
+    - *Requirement*: Connect Supabase React Native Auth client (`@supabase/supabase-js`) to manage real auth sessions, JWT tokens, and OAuth2 refresh flow.
+
+### ⚙️ Properties & Configurations
+35. **API Base URL Configuration**: API client (`apiClient.ts`) defaults to `http://localhost:8080` if `EXPO_PUBLIC_API_URL` is not configured.
+    - *Requirement*: Define `EXPO_PUBLIC_API_URL` in `.env` for production app builds.
+36. **Expo Font Assets (Space Grotesk & IBM Plex)**: Typography falls back to system / monospaced fonts on native platforms if custom font assets are not explicitly loaded.
+    - *Requirement*: Bundle Space Grotesk and IBM Plex font files and load them using `useFonts()` from `expo-font` in `_layout.tsx`.
+
+## [2026-07-21] Session 8: Design System Redo (Design Manifesto Compliance)
+
+### 🎨 Visual & UI Alignment
+37. **Native SVG Diamond Aperture Rendering**: `DiamondAperture.tsx` uses animated React Native Views for rotated diamond stroke rings.
+    - *Requirement*: For production high-precision rendering on iOS/Android native devices, upgrade to `react-native-svg` with explicit stroke-dasharray SVG polygon rendering.
+38. **Web CSS Polygon Chamfer Fallback on Mobile**: The 45° chamfer cut uses CSS `clip-path: polygon(...)` on Web, and a corner notch indicator on Native.
+    - *Requirement*: Add `react-native-skia` or `react-native-svg` clipping paths to render identical 45° chamfer cuts on Android and iOS canvas containers.
+
+## [2026-07-22] Session 9: Complete Frontend Redesign & Architectural Rebuild
+
+### 🧩 UI & Navigation Architecture
+39. **Expo Router Stack & Tab Hierarchy**: Implemented full 27-screen modular navigation architecture covering Auth Stack (`/splash`, `/role-selection`, `/register`, `/login`, `/pro-setup`), Client Navigator (4 tabs: Home, Browse, Activity, Account + stack sub-screens), Professional Navigator (4 tabs: Home, Jobs, Score, Account + stack sub-screens), and Shared Screens (`/shared/call`, `/shared/report/[id]`).
+    - *Requirement*: Ensure deep-link FCM push handlers route to role-aware sub-stack endpoints (e.g. `/(pro)/home/request/[id]`) even on cold start.
+
+### 🎨 Google Fonts Bundle & Custom Font Assets
+40. **Google Fonts Package Bundle**: Installed `@expo-google-fonts/space-grotesk`, `@expo-google-fonts/ibm-plex-sans`, and `@expo-google-fonts/ibm-plex-mono` to ensure crisp visual system font rendering on both Expo Native and Web.
+    - *Requirement*: Validate font loading on physical iOS/Android builds to ensure non-blocking font hydration during `RootLayout` initialization.
+
+### ⚙️ External SDK Integrations
+41. **In-App Call SDK Integration**: Voice and video call functionality (`/shared/call.tsx`) is currently simulated with UI controls and status timers.
+    - *Requirement*: Wire Stream Video / WebRTC Call SDK with backend token generation (`GET /api/call/token`) when voice calls are initiated between clients and guards.
+42. **Supabase Signed URL File Uploads**: Photo attachment in `log-incident.tsx` and document upload in `documents.tsx` simulate local upload state.
+    - *Requirement*: Integrate backend signed-URL generation (`POST /api/documents/upload-url`) for direct client-side upload to Supabase Storage buckets.
+
+## [2026-07-22] Session 10: Mockup-Driven Total UI Redesign & Clean Vector Icon System
+
+### 🎨 Vector Icon System Alignment (No 3D/Emojis)
+43. **Unified Vector Icon Primitive (`Icon.tsx`)**: Replaced all 3D and emoji icons with crisp vector line icons using `@expo/vector-icons` (`Ionicons` / `Feather`) matching Material Symbols in `sentri_design_mockups`.
+    - *Requirement*: Ensure native icon font glyph bundles are included in production Expo prebuild configurations.
+
+### 🛡️ Mockup-Fidelity Screen Layouts
+44. **27-Screen Mockup Redesign**: Rebuilt all 27 screens (Auth Stack, Client Navigator, Professional Navigator, and Shared Takeovers) strictly adhering to `sentri_design_mockups/` HTML/CSS mockups as the source of truth for header app bars (`SentriHeader`), tactical chamfer cards, 4px status accent ticket rows (`DispatchTicket`), and floating capsule dock (`SentriDock`).
+    - *Requirement*: Test responsiveness on various mobile viewports and web resolutions (`npm run web`).
+
+## [2026-07-24] Session 11: Frontend Sub-Phases 1A & 1B (Design Tokens, Core Primitives, Auth Stack & Onboarding)
+
+### 🎨 Design System & UI Components
+45. **Design System & Typography Tokens**: Defined dark tactical color tokens (`#0E141C`, `#171C25`, `#F0A73B`), typography (`Space Grotesk`, `IBM Plex`), spacing, and chamfer radius in `src/constants/theme.ts`.
+46. **Core UI Primitives & Signature Marks**: Built `SentriText`, `SentriButton` (with primary Gold, secondary, outline, danger variants), `Icon` primitive, `DiamondAperture` signature mark with pulsing animation, `TacticalCard` with 4px left status accent strips, `DispatchTicket`, `SentriHeader`, and `SentriDock` floating capsule navigation bar.
+
+### 🔐 Auth Stack & Onboarding Screens Implementation
+47. **Auth Session Engine**: Built `AuthContext` managing role-aware sessions (`client` | `professional`) and JWT token lifecycle.
+48. **Auth & Onboarding Screens**: Implemented `splash.tsx`, `role-selection.tsx`, `register.tsx`, `pro-setup.tsx`, and `login.tsx` matching `sentri_design_mockups` HTML specifications.
+
+
+
+

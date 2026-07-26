@@ -1,0 +1,301 @@
+<!DOCTYPE html><html lang="en" class="dark" style=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#680104",
+                        "on-tertiary-fixed": "#410001",
+                        "surface-container-low": "#171c25",
+                        "on-surface": "#dee2ef",
+                        "secondary-fixed-dim": "#abc8f4",
+                        "on-primary-container": "#643f00",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#30353e",
+                        "inverse-on-surface": "#2c313a",
+                        "inverse-surface": "#dee2ef",
+                        "surface-container-high": "#252a33",
+                        "on-error": "#690005",
+                        "on-secondary": "#103155",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "secondary-fixed": "#d3e3ff",
+                        "on-background": "#dee2ef",
+                        "secondary": "#abc8f4",
+                        "surface-dim": "#0e141c",
+                        "surface-container-lowest": "#090e17",
+                        "surface-bright": "#343943",
+                        "surface-tint": "#ffb958",
+                        "primary-fixed-dim": "#ffb958",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#9f8e7c",
+                        "secondary-container": "#2a486d",
+                        "on-tertiary-container": "#891c17",
+                        "background": "#0e141c",
+                        "tertiary-container": "#ff9a8e",
+                        "tertiary-fixed": "#ffdad5",
+                        "primary-container": "#f0a73b",
+                        "primary-fixed": "#ffddb5",
+                        "on-primary": "#462b00",
+                        "primary": "#ffc77f",
+                        "outline-variant": "#514535",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#845400",
+                        "surface-container": "#1b2029",
+                        "on-secondary-container": "#9ab7e2",
+                        "on-primary-fixed-variant": "#643f00",
+                        "surface-variant": "#30353e",
+                        "on-secondary-fixed": "#001c39",
+                        "surface": "#0e141c",
+                        "on-surface-variant": "#d6c3af",
+                        "on-secondary-fixed-variant": "#2a486d",
+                        "on-primary-fixed": "#2a1800",
+                        "tertiary": "#ffc2bb",
+                        "on-tertiary-fixed-variant": "#891c17"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-lg": ["IBM Plex Sans"],
+                        "body-md": ["IBM Plex Sans"],
+                        "label-caps": ["IBM Plex Mono"],
+                        "display-lg": ["Space Grotesk"],
+                        "data-mono": ["IBM Plex Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "data-mono": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface font-body-md h-screen flex flex-col overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar (Transactional Intent: Suppressing BottomNav, keeping Header for anchoring) -->
+<header class="bg-surface-dim dark:bg-surface-dim border-b border-outline-variant dark:border-outline-variant items-center w-full px-margin-mobile h-16 shrink-0 z-50 grid grid-cols-2 relative flex justify-between">
+<!-- Leading Icon (Changed to back arrow for transactional flow, maintaining JSON structure) -->
+<button class="flex items-center justify-center p-2 -ml-2 text-primary dark:text-primary hover:text-primary-fixed-dim transition-colors" aria-label="Go Back">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<!-- Headline -->
+<h1 class="font-display-lg-mobile text-display-lg-mobile font-bold tracking-tighter text-primary dark:text-primary uppercase absolute left-1/2 -translate-x-1/2">SENTRI</h1>
+<!-- Trailing Icon -->
+<button class="flex items-center justify-center p-2 -mr-2 text-on-surface-variant dark:text-on-surface-variant hover:text-primary-fixed-dim transition-colors" aria-label="Account">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 overflow-y-auto w-full max-w-container-max mx-auto md:px-margin-desktop flex flex-col lg:flex-row relative">
+<!-- Background Grid Atmospheric Overlay -->
+<div class="absolute inset-0 pointer-events-none opacity-5" style="background-image: linear-gradient(var(--tw-colors-secondary-container) 1px, transparent 1px), linear-gradient(90deg, var(--tw-colors-secondary-container) 1px, transparent 1px); background-size: 24px 24px;"></div>
+<!-- Left Column: Job Summary & Validation -->
+<section class="flex-1 px-margin-mobile py-6 lg:py-8 flex flex-col gap-6 relative z-10 lg:border-r lg:border-secondary-container/50">
+<header class="mb-2 grid grid-cols-2 relative flex justify-between items-center">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-2 h-2 bg-primary-container diamond-pip"></div>
+<span class="font-label-caps text-label-caps text-primary uppercase">Authorization Required</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Review &amp; Dispatch</h2>
+<p class="font-body-md text-on-surface-variant mt-1 max-w-md">Verify operation parameters and select deployment protocol before initiating final dispatch sequence.</p>
+</header>
+<!-- Hero Panel: The Chamfered Job Ticket -->
+<div class="bg-secondary-container p-[1px] chamfer-panel-wrapper w-full relative group">
+<!-- Inner panel to create 1px border effect with chamfer -->
+<div class="bg-surface-container h-full w-full chamfer-panel-inner p-5 sm:p-6 flex flex-col gap-5">
+<!-- Ticket Header -->
+<div class="flex justify-between items-start border-b border-secondary-container/50 pb-4">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase block mb-1">Operation ID</span>
+<span class="font-data-mono text-data-mono text-on-surface tracking-wider">OP-77A-9284</span>
+</div>
+<div class="bg-surface-container-lowest border border-secondary-container px-3 py-1 flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-tertiary-container rounded-full animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-tertiary-container uppercase">Pending</span>
+</div>
+</div>
+<!-- Data Grid -->
+<div class="grid grid-cols-2 gap-x-4 gap-y-5">
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Service Type</span>
+<span class="font-data-mono text-data-mono text-on-surface">Perimeter Guard</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Threat Level</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[18px]">warning</span>
+<span class="font-data-mono text-data-mono text-primary-container">Elevated (L2)</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Duration</span>
+<span class="font-data-mono text-data-mono text-on-surface">12.0 HRS [2000-0800]</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Personnel Req.</span>
+<span class="font-data-mono text-data-mono text-on-surface">1x Armed Operative</span>
+</div>
+<div class="col-span-2 flex flex-col gap-1 border-t border-secondary-container/50 pt-4 mt-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Location Vector</span>
+<span class="font-data-mono text-data-mono text-on-surface truncate">Sector 4, Industrial Logistics Hub, Zone B</span>
+</div>
+</div>
+<!-- Cost Footer -->
+<div class="mt-4 bg-surface-container-low border border-secondary-container p-3 flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Estimated Allocation</span>
+<span class="font-data-mono text-[16px] text-primary-fixed tracking-wider">$1,450.00 <span class="text-on-surface-variant text-[12px]">USD</span></span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Deployment Protocol -->
+<section class="flex-1 px-margin-mobile py-6 lg:py-8 flex flex-col relative z-10 bg-surface-dim lg:bg-transparent">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest border-b border-secondary-container pb-1 inline-block">Deployment Protocol</h3>
+</div>
+<!-- Quick Dispatch Toggle -->
+<div class="mb-8 bg-surface-container border border-secondary-container p-1 flex relative">
+<div class="w-1/2 relative z-10">
+<button class="w-full py-3 font-label-caps text-label-caps text-on-primary-container bg-primary-container transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+                        QUICK DISPATCH
+                    </button>
+</div>
+<div class="w-1/2 relative z-10">
+<button class="w-full py-3 font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">list</span>
+                        MANUAL SELECT
+                    </button>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant text-sm mb-4 leading-relaxed border-l-2 border-secondary-container pl-3">
+                System has identified optimal operatives based on proximity, rating, and weapon certifications. Select a profile or utilize Quick Dispatch for algorithmic assignment.
+            </p>
+<!-- Dispatch-Ticket Rows (Top Matches) -->
+<div class="flex flex-col gap-3 flex-1 overflow-y-auto pb-24 lg:pb-0 pr-1">
+<!-- Ticket Row 1 (Primary Match) -->
+<button class="w-full text-left bg-surface-container border border-secondary-container relative flex items-stretch hover:bg-surface-container-high transition-colors group cursor-pointer h-[72px]">
+<!-- Accent Bar -->
+<div class="w-1.5 h-full bg-primary-container shrink-0"></div>
+<!-- Structural Notches -->
+<div class="ticket-notch-top"></div>
+<div class="ticket-notch-bottom"></div>
+<div class="flex-1 p-3 pl-4 flex items-center justify-between overflow-hidden">
+<div class="flex items-center gap-4">
+<!-- Avatar Placeholder -->
+<div class="w-10 h-10 bg-surface-container-highest border border-secondary-container shrink-0 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-80 mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-300" data-alt="A high-contrast, black and white portrait photo of a rugged, professional security operative in tactical gear, looking off-camera with a serious expression. Studio lighting, dark background, stark shadows. Exudes authority and competence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy3HyDdB1CedUW80uRi4ThmOVxZqGB5sb8C6JAoKZNDUr0WBPGpMT4rB6wA_bXgh0QTnrH6V02TkdU5lw64MFbvXqhwDiIQEOWJF2lW1289tAXz2aGC_-zCHUMQmymLrlgd30BQpx3ZyCWDJzcWsMxBwzGWhy1HD9aw3rm2ovc47MhiE7DsuD16fAyyYoGpxoMxVMImZ1LXoC5VNbL9JJ51N8bDgtNWx5mMOxU_RsOOR9F6Tnsy8U-">
+</div>
+<div class="flex flex-col justify-center">
+<span class="font-data-mono text-data-mono text-on-surface font-semibold block leading-tight">M. VANCE</span>
+<span class="font-label-caps text-[10px] text-primary-container uppercase tracking-wider block mt-1">99.8% Match • ETA 14m</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 pr-4">
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-data-mono text-[12px] text-on-surface">4.9</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant border border-secondary-container px-1">ARMED L3</span>
+</div>
+</div>
+</button>
+<!-- Ticket Row 2 -->
+<button class="w-full text-left bg-surface-container-low border border-secondary-container relative flex items-stretch hover:bg-surface-container transition-colors group cursor-pointer h-[72px] opacity-80 hover:opacity-100">
+<!-- Accent Bar -->
+<div class="w-1.5 h-full bg-surface-variant shrink-0 group-hover:bg-secondary-container transition-colors"></div>
+<!-- Structural Notches -->
+<div class="ticket-notch-top"></div>
+<div class="ticket-notch-bottom"></div>
+<div class="flex-1 p-3 pl-4 flex items-center justify-between overflow-hidden">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container-highest border border-secondary-container shrink-0 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-300" data-alt="A high-contrast, moody portrait of a female security specialist wearing dark tactical clothing. Low key lighting, cold color temperature. Professional, vigilant demeanor. Cinematic composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_lCQNaJDLm_OnWWldC5eCSg5JGGRPEUZfvi00TtZXfi46_pAUPEj3Bb8488Jrg_pWpHYOAp33TXcouA102cJlLyo_H3Z16ybb81J9dnUG6OY9G7ulmjcHO5kL81mKhL8N89yf_KVJm55ZCYwuFnu5pZYfwW7X8rDwBkYSqS5q0kEbTq_n3DsQW3_HH8qfDbj8mK4f1Axe6wjz2hnRLXA6AplampqUZ682mO0_cMKOBM5GwPsuOT35">
+</div>
+<div class="flex flex-col justify-center">
+<span class="font-data-mono text-data-mono text-on-surface block leading-tight">S. JENKINS</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider block mt-1">94.2% Match • ETA 22m</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 pr-4">
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-data-mono text-[12px] text-on-surface">4.7</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant border border-secondary-container px-1">ARMED L2</span>
+</div>
+</div>
+</button>
+<!-- Ticket Row 3 -->
+<button class="w-full text-left bg-surface-container-lowest border border-secondary-container relative flex items-stretch hover:bg-surface-container transition-colors group cursor-pointer h-[72px] opacity-60 hover:opacity-100">
+<!-- Accent Bar -->
+<div class="w-1.5 h-full bg-surface-variant shrink-0 group-hover:bg-secondary-container transition-colors"></div>
+<!-- Structural Notches -->
+<div class="ticket-notch-top"></div>
+<div class="ticket-notch-bottom"></div>
+<div class="flex-1 p-3 pl-4 flex items-center justify-between overflow-hidden">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container-highest border border-secondary-container shrink-0 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div class="flex flex-col justify-center">
+<span class="font-data-mono text-data-mono text-on-surface block leading-tight">D. KOWALSKI</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider block mt-1">89.0% Match • ETA 35m</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 pr-4">
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-data-mono text-[12px] text-on-surface">4.9</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant border border-secondary-container px-1">ARMED L3</span>
+</div>
+</div>
+</button>
+</div>
+</section>
+</main>
+<!-- Global Action Bar (Sticky Bottom) -->
+<footer class="bg-surface-container w-full border-t border-secondary-container shrink-0 pb-safe relative z-50">
+<div class="max-w-container-max mx-auto px-margin-mobile py-4 lg:py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-4 w-full sm:w-auto">
+<div class="w-12 h-12 border border-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[24px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest block">Final Authorization</span>
+<span class="font-data-mono text-[16px] text-on-surface font-semibold tracking-wider">AWAITING COMMAND</span>
+</div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full sm:w-auto min-w-[280px] h-14 bg-primary-container hover:bg-primary text-on-primary-container transition-all flex items-center justify-center gap-3 relative overflow-hidden group">
+<div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] bg-[length:250%_250%,100%_100%] animate-[shimmer_2s_infinite] opacity-0 group-hover:opacity-100 mix-blend-overlay"></div>
+<span class="font-label-caps text-[14px] tracking-[0.15em] font-bold z-10 relative">CONFIRM &amp; DISPATCH</span>
+<span class="material-symbols-outlined text-[20px] z-10 relative transition-transform group-hover:translate-x-1">send</span>
+</button>
+</div>
+</footer>
+<!-- Inline Animation Keyframes -->
+<style>
+        @keyframes shimmer {
+            0% { background-position: 200% 0, 0 0; }
+            100% { background-position: -200% 0, 0 0; }
+        }
+    </style>
+
+</body></html>

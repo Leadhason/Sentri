@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Report Viewer - SENTRI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#410001",
+                    "on-surface-variant": "#d6c3af",
+                    "on-error": "#690005",
+                    "on-secondary": "#103155",
+                    "surface-bright": "#343943",
+                    "primary-fixed-dim": "#ffb958",
+                    "primary-fixed": "#ffddb5",
+                    "on-error-container": "#ffdad6",
+                    "background": "#0e141c",
+                    "surface-dim": "#0e141c",
+                    "on-primary-container": "#643f00",
+                    "on-background": "#dee2ef",
+                    "on-tertiary": "#680104",
+                    "on-secondary-container": "#9ab7e2",
+                    "surface": "#0e141c",
+                    "on-tertiary-fixed-variant": "#891c17",
+                    "on-primary-fixed": "#2a1800",
+                    "secondary-fixed": "#d3e3ff",
+                    "surface-container-highest": "#30353e",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed": "#ffdad5",
+                    "primary": "#ffc77f",
+                    "on-primary": "#462b00",
+                    "secondary-fixed-dim": "#abc8f4",
+                    "on-tertiary-container": "#891c17",
+                    "secondary-container": "#2a486d",
+                    "inverse-on-surface": "#2c313a",
+                    "surface-container-lowest": "#090e17",
+                    "surface-variant": "#30353e",
+                    "inverse-surface": "#dee2ef",
+                    "primary-container": "#f0a73b",
+                    "surface-container": "#1b2029",
+                    "tertiary-container": "#ff9a8e",
+                    "on-secondary-fixed": "#001c39",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#252a33",
+                    "outline": "#9f8e7c",
+                    "surface-container-low": "#171c25",
+                    "tertiary": "#ffc2bb",
+                    "surface-tint": "#ffb958",
+                    "on-secondary-fixed-variant": "#2a486d",
+                    "on-primary-fixed-variant": "#643f00",
+                    "on-surface": "#dee2ef",
+                    "inverse-primary": "#845400",
+                    "outline-variant": "#514535",
+                    "tertiary-fixed-dim": "#ffb4aa",
+                    "secondary": "#abc8f4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "margin-desktop": "32px",
+                    "unit": "4px",
+                    "margin-mobile": "16px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": [
+                            "Space Grotesk"
+                    ],
+                    "headline-md": [
+                            "Space Grotesk"
+                    ],
+                    "body-lg": [
+                            "IBM Plex Sans"
+                    ],
+                    "label-caps": [
+                            "IBM Plex Mono"
+                    ],
+                    "display-lg": [
+                            "Space Grotesk"
+                    ],
+                    "data-mono": [
+                            "IBM Plex Mono"
+                    ],
+                    "body-md": [
+                            "IBM Plex Sans"
+                    ]
+            },
+            "fontSize": {
+                    "display-lg-mobile": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "0.1em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "data-mono": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+        },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 font-body-md text-body-md md:font-body-lg md:text-body-lg">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-surface-container dark:bg-surface-container docked full-width top-0 border-b border-outline-variant dark:border-outline-variant flat no shadows md:hidden">
+<button class="text-primary dark:text-primary hover:bg-surface-container-high transition-colors p-2 rounded flex items-center justify-center Active: scale-95 duration-100">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+</button>
+<div class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-primary dark:text-primary">SENTRI</div>
+<button class="text-primary dark:text-primary hover:bg-surface-container-high transition-colors p-2 rounded flex items-center justify-center Active: scale-95 duration-100">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Desktop TopAppBar equivalent (for continuity, though prompt asks for mobile components mainly, ensuring layout works) -->
+<header class="hidden md:flex fixed top-0 left-0 w-full z-50 justify-between items-center px-margin-desktop h-20 bg-surface-container dark:bg-surface-container border-b border-outline-variant dark:border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">shield</span>
+<div class="font-display-lg text-display-lg tracking-tighter text-primary">SENTRI</div>
+</div>
+<div class="flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href="#"><span class="material-symbols-outlined text-xl">home</span> Dashboard</a>
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-primary pb-1 flex items-center gap-2" href="#"><span class="material-symbols-outlined text-xl">analytics</span> Reports</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2" href="#"><span class="material-symbols-outlined text-xl">work</span> Active Operations</a>
+</nav>
+<button class="text-primary hover:bg-surface-container-high p-2 rounded transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-20 md:pt-28 px-gutter md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Action Bar -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+<div>
+<h1 class="font-headline-md text-headline-md md:font-display-lg md:text-display-lg text-primary mb-1">INCIDENT REPORT</h1>
+<p class="font-data-mono text-data-mono text-on-surface-variant">ID: RPT-2023-8901-A | Generated: 2023-11-14T08:45:00Z</p>
+</div>
+<button class="bg-primary-container text-black font-label-caps text-label-caps px-6 py-3 hover:bg-primary-fixed transition-colors flex items-center gap-2 w-full md:w-auto justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">download</span>
+                EXPORT REPORT
+            </button>
+</div>
+<!-- Layout Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Left Column: Summary & Details -->
+<div class="md:col-span-2 space-y-6">
+<!-- Summary Card with Chamfer (Hero Panel) -->
+<div class="bg-surface-container border border-secondary-container relative overflow-hidden" style="clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);">
+<!-- Accent Line -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="p-6">
+<h2 class="font-label-caps text-label-caps text-secondary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">summarize</span> EXECUTIVE SUMMARY
+                        </h2>
+<p class="mb-4">Unauthorized access attempt detected at Sector 7g auxiliary sub-station. Automated security protocols engaged successfully, isolating the affected network segment within 400ms of initial intrusion detection. No data exfiltration occurred. Physical security dispatched to location.</p>
+<div class="grid grid-cols-2 gap-4 mt-6">
+<div class="border-l border-outline-variant pl-4">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">SEVERITY</div>
+<div class="text-error font-data-mono text-data-mono flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">warning</span> HIGH
+                                </div>
+</div>
+<div class="border-l border-outline-variant pl-4">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">STATUS</div>
+<div class="text-primary font-data-mono text-data-mono flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span> CONTAINED
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sequence of Events (Log) -->
+<div class="bg-surface-container border border-outline-variant">
+<div class="p-4 border-b border-outline-variant bg-surface-container-high">
+<h2 class="font-label-caps text-label-caps text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">history</span> SEQUENCE OF EVENTS
+                        </h2>
+</div>
+<div class="p-0">
+<!-- Dispatch-Ticket Row -->
+<div class="relative border-b border-outline-variant p-4 pl-6">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<!-- Notches -->
+<div class="absolute top-0 right-0 w-3 h-3 bg-background transform translate-x-1.5 -translate-y-1.5 rotate-45 border-l border-b border-outline-variant"></div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-background transform translate-x-1.5 translate-y-1.5 rotate-45 border-t border-l border-outline-variant"></div>
+<div class="flex justify-between items-start">
+<div>
+<div class="font-data-mono text-data-mono text-on-surface-variant mb-1">08:42:15.003Z</div>
+<div class="font-headline-md text-headline-md text-error mb-2">INTRUSION DETECTED</div>
+<p class="text-sm">Multiple failed auth attempts followed by bypass signature match on node aux-7g-04.</p>
+</div>
+</div>
+</div>
+<!-- Dispatch-Ticket Row -->
+<div class="relative border-b border-outline-variant p-4 pl-6">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="flex justify-between items-start">
+<div>
+<div class="font-data-mono text-data-mono text-on-surface-variant mb-1">08:42:15.403Z</div>
+<div class="text-primary font-bold mb-2">PROTOCOL ENGAGED</div>
+<p class="text-sm">Network isolation complete. Node aux-7g-04 quarantined. Failover initialized.</p>
+</div>
+</div>
+</div>
+<!-- Dispatch-Ticket Row -->
+<div class="relative p-4 pl-6">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary-container"></div>
+<div class="flex justify-between items-start">
+<div>
+<div class="font-data-mono text-data-mono text-on-surface-variant mb-1">08:45:00.000Z</div>
+<div class="text-on-background mb-2">DISPATCH ALERTED</div>
+<p class="text-sm">Physical security team Alpha deployed to Sector 7g.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Evidence & Metadata -->
+<div class="space-y-6">
+<!-- Evidence Panel -->
+<div class="bg-surface-container border border-outline-variant">
+<div class="p-4 border-b border-outline-variant bg-surface-container-high">
+<h2 class="font-label-caps text-label-caps text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">image</span> EVIDENCE
+                        </h2>
+</div>
+<div class="p-4 space-y-4">
+<div class="relative group cursor-pointer border border-outline-variant">
+<img class="w-full h-32 object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Security camera footage thumbnail showing a dark, utilitarian server room corridor. The scene is illuminated by harsh, stark white emergency lighting, casting deep, dramatic shadows. A blurry figure is partially visible near a server rack, rendered in high contrast to emphasize the tactical, high-stakes security environment. The overall aesthetic is gritty, precise, and tense." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnFlmQBE-qNtNSuMSW0paByi8fJSjuYQsCRiPPEgKl9_CL-xn73QCV-vu0GeFJDhITt7NYqqy9n6djyNlaPFCzHJIvkDwo0gFvCNvdvOvb25QaNlMHjxc9GPI8nhxUdqU-rSo2MWUMaXudIRz4nGQX5Wi-TVVI-zvvTWghLYbKQMSdVDOZyF1QgqaLaVp4iZEtJvxHv_Z8GJpmuDwy6KCcoLrncTN3y24Wv3MFnjb8ZO5eBrwlFFP3"/>
+<div class="absolute inset-0 flex items-center justify-center bg-background/50 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary text-4xl">play_circle</span>
+</div>
+<div class="absolute bottom-2 left-2 bg-background/80 px-2 py-1 font-data-mono text-[10px] text-primary">CAM_7G_02</div>
+</div>
+<div class="border border-outline-variant bg-surface-container-low p-3">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2">RAW PACKET DUMP (EXCERPT)</div>
+<div class="font-data-mono text-[10px] text-secondary font-mono leading-tight whitespace-pre-wrap break-all opacity-70">
+0x0000:  4500 003c 1c46 4000 4006 b1e6 c0a8 0068
+0x0010:  c0a8 0001 0400 0400 0000 0000 0000 0000
+                            </div>
+</div>
+</div>
+</div>
+<!-- Entity Details -->
+<div class="bg-surface-container border border-outline-variant">
+<div class="p-4 border-b border-outline-variant bg-surface-container-high">
+<h2 class="font-label-caps text-label-caps text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">info</span> METADATA
+                        </h2>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">LOCATION</span>
+<span class="font-data-mono text-data-mono text-on-background">Sector 7g</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SYSTEM</span>
+<span class="font-data-mono text-data-mono text-on-background">aux-7g-04</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ANALYST</span>
+<span class="font-data-mono text-data-mono text-on-background">AUTO-SYS</span>
+</div>
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant">REVIEWED BY</span>
+<span class="font-data-mono text-data-mono text-primary">Pending</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-safe md:hidden">
+<div class="bg-surface-container/90 dark:bg-surface-container/90 floating-pill rounded-full mx-auto mb-6 backdrop-blur-md border border-outline-variant dark:border-outline-variant shadow-lg flex gap-2 p-2">
+<a class="flex items-center justify-center text-on-surface-variant w-12 h-12 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant w-12 h-12 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+</a>
+<a class="flex items-center justify-center bg-primary text-on-primary rounded-full w-12 h-12 Active: scale-110 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant w-12 h-12 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</a>
+</div>
+</nav>
+</body></html>
