@@ -18,7 +18,6 @@ import java.util.UUID;
 @SuperBuilder
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(nullable = false, unique = true)
@@ -38,6 +37,9 @@ public class User {
 
     @PrePersist
     protected void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
         if (createdAt == null) {
             createdAt = OffsetDateTime.now();
         }

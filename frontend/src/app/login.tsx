@@ -35,7 +35,7 @@ export default function LoginScreen() {
     setLoading(true);
 
     try {
-      await login(email, selectedRole);
+      await login(email, password, selectedRole);
       setLoading(false);
 
       if (selectedRole === 'professional') {
@@ -51,54 +51,19 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <SentriHeader title="SENTRI" showBack statusBadge="OPERATOR LOGIN" />
+      <SentriHeader title="SENTRI" showBack />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Header section */}
         <View style={styles.headerSection}>
-          <SentriText variant="mono" color={Colors.gold} style={styles.stepTag}>
-            SECURE PORTAL // OAUTH2
-          </SentriText>
           <SentriText variant="h1" style={styles.heading}>
-            Operator Login
+            Login
           </SentriText>
           <SentriText variant="body" color={Colors.textSecondary}>
             Enter your credentials to access your Sentri tactical dashboard.
           </SentriText>
         </View>
 
-        {/* Role Toggle Selector */}
-        <View style={styles.roleSegment}>
-          <TouchableOpacity
-            style={[styles.segmentBtn, selectedRole === 'client' && styles.activeSegmentBtn]}
-            onPress={() => setSelectedRole('client')}
-            activeOpacity={0.8}
-          >
-            <Icon name="briefcase" size={16} color={selectedRole === 'client' ? Colors.gold : Colors.textMuted} />
-            <SentriText
-              variant="mono"
-              color={selectedRole === 'client' ? Colors.gold : Colors.textMuted}
-              style={styles.segmentText}
-            >
-              CLIENT
-            </SentriText>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.segmentBtn, selectedRole === 'professional' && styles.activeSegmentBtn]}
-            onPress={() => setSelectedRole('professional')}
-            activeOpacity={0.8}
-          >
-            <Icon name="shield-checkmark" size={16} color={selectedRole === 'professional' ? Colors.gold : Colors.textMuted} />
-            <SentriText
-              variant="mono"
-              color={selectedRole === 'professional' ? Colors.gold : Colors.textMuted}
-              style={styles.segmentText}
-            >
-              PROFESSIONAL
-            </SentriText>
-          </TouchableOpacity>
-        </View>
 
         {errorMsg ? (
           <View style={styles.errorBanner}>
@@ -156,7 +121,7 @@ export default function LoginScreen() {
         <SentriButton
           title="Authenticate & Enter →"
           variant="primary"
-          size="lg"
+          size="md"
           loading={loading}
           onPress={handleLogin}
           style={styles.submitBtn}

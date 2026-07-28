@@ -30,79 +30,81 @@ export default function RoleSelectionScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <SentriHeader title="SENTRI"/>
+      <SentriHeader title="SENTRI" showBack={false} rightIcon={undefined} />
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.headerSection}>
-          <SentriText variant="h1" align="center" style={styles.mainHeading}>
-            Select Role
-          </SentriText>
-        </View>
-
-        {/* Client Selection Card */}
-        <TacticalCard
-          interactive
-          onPress={() => handleSelect('client')}
-          backgroundColor={isClientSelected ? Colors.surfaceElevated : Colors.surface}
-          borderColor={isClientSelected ? Colors.gold : Colors.border}
-          accentColor={isClientSelected ? Colors.gold : Colors.borderLight}
-          style={styles.cardMargin}
-        >
-          <View style={styles.cardHeader}>
-            <View style={[styles.iconBox, isClientSelected && styles.activeIconBox]}>
-              <Icon name="briefcase" size={22} color={isClientSelected ? Colors.gold : Colors.text} />
-            </View>
-            <View style={styles.cardTitleBox}>
-              <SentriText variant="h3" color={Colors.text} style={styles.roleTitle}>
-                I need to hire security
-              </SentriText>
-            </View>
-            <View style={[styles.checkBadge, isClientSelected ? styles.checkBadgeActive : styles.checkBadgeInactive]}>
-              {isClientSelected ? (
-                <Icon name="checkmark" size={14} color={Colors.background} />
-              ) : (
-                <View style={styles.emptyDot} />
-              )}
-            </View>
+      <View style={styles.mainContainer}>
+        <ScrollView contentContainerStyle={styles.scrollContent} bounces={false}>
+          <View style={styles.headerSection}>
+            <SentriText variant="h1" align="center" style={styles.mainHeading}>
+              Select Role
+            </SentriText>
           </View>
-          <SentriText variant="body" color={Colors.textSecondary} style={styles.cardBody}>
-            Request verified security teams for events or personal protection.
-          </SentriText>
-        </TacticalCard>
 
-        {/* Security Professional Card */}
-        <TacticalCard
-          interactive
-          onPress={() => handleSelect('professional')}
-          backgroundColor={isProSelected ? Colors.surfaceElevated : Colors.surface}
-          borderColor={isProSelected ? Colors.gold : Colors.border}
-          accentColor={isProSelected ? Colors.gold : Colors.borderLight}
-          style={styles.cardMargin}
-        >
-          <View style={styles.cardHeader}>
-            <View style={[styles.iconBox, isProSelected && styles.activeIconBox]}>
-              <Icon name="shield-checkmark" size={22} color={isProSelected ? Colors.gold : Colors.text} />
+          {/* Client Selection Card */}
+          <TacticalCard
+            interactive
+            onPress={() => handleSelect('client')}
+            backgroundColor={isClientSelected ? Colors.surfaceElevated : Colors.surface}
+            borderColor={isClientSelected ? Colors.gold : Colors.border}
+            accentColor={isClientSelected ? Colors.gold : Colors.borderLight}
+            style={styles.cardMargin}
+          >
+            <View style={styles.cardHeader}>
+              <View style={[styles.iconBox, isClientSelected && styles.activeIconBox]}>
+                <Icon name="briefcase" size={22} color={isClientSelected ? Colors.gold : Colors.text} />
+              </View>
+              <View style={styles.cardTitleBox}>
+                <SentriText variant="h3" color={Colors.text} style={styles.roleTitle}>
+                  I need to hire security
+                </SentriText>
+              </View>
+              <View style={[styles.checkBadge, isClientSelected ? styles.checkBadgeActive : styles.checkBadgeInactive]}>
+                {isClientSelected ? (
+                  <Icon name="checkmark" size={14} color={Colors.background} />
+                ) : (
+                  <View style={styles.emptyDot} />
+                )}
+              </View>
             </View>
-            <View style={styles.cardTitleBox}>
-              <SentriText variant="h3" color={Colors.text} style={styles.roleTitle}>
-                I am a security professional
-              </SentriText>
-            </View>
-            <View style={[styles.checkBadge, isProSelected ? styles.checkBadgeActive : styles.checkBadgeInactive]}>
-              {isProSelected ? (
-                <Icon name="checkmark" size={14} color={Colors.background} />
-              ) : (
-                <View style={styles.emptyDot} />
-              )}
-            </View>
-          </View>
-          <SentriText variant="body" color={Colors.textSecondary} style={styles.cardBody}>
-            Accept dispatch requests, manage shifts, and build your trust score.
-          </SentriText>
-        </TacticalCard>
+            <SentriText variant="body" color={Colors.textSecondary} style={styles.cardBody}>
+              Request verified security teams for events or personal protection.
+            </SentriText>
+          </TacticalCard>
 
-        {/* Compact Continue Button */}
-        <View style={styles.actionSection}>
+          {/* Security Professional Card */}
+          <TacticalCard
+            interactive
+            onPress={() => handleSelect('professional')}
+            backgroundColor={isProSelected ? Colors.surfaceElevated : Colors.surface}
+            borderColor={isProSelected ? Colors.gold : Colors.border}
+            accentColor={isProSelected ? Colors.gold : Colors.borderLight}
+            style={styles.cardMargin}
+          >
+            <View style={styles.cardHeader}>
+              <View style={[styles.iconBox, isProSelected && styles.activeIconBox]}>
+                <Icon name="shield-checkmark" size={22} color={isProSelected ? Colors.gold : Colors.text} />
+              </View>
+              <View style={styles.cardTitleBox}>
+                <SentriText variant="h3" color={Colors.text} style={styles.roleTitle}>
+                  I am a security professional
+                </SentriText>
+              </View>
+              <View style={[styles.checkBadge, isProSelected ? styles.checkBadgeActive : styles.checkBadgeInactive]}>
+                {isProSelected ? (
+                  <Icon name="checkmark" size={14} color={Colors.background} />
+                ) : (
+                  <View style={styles.emptyDot} />
+                )}
+              </View>
+            </View>
+            <SentriText variant="body" color={Colors.textSecondary} style={styles.cardBody}>
+              Accept dispatch requests, manage shifts, and build your trust score.
+            </SentriText>
+          </TacticalCard>
+        </ScrollView>
+
+        {/* Action button anchored at the very bottom */}
+        <View style={styles.bottomActionSection}>
           <SentriButton
             title="Proceed →"
             variant="primary"
@@ -110,7 +112,7 @@ export default function RoleSelectionScreen() {
             onPress={handleContinue}
           />
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -120,11 +122,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  scrollContent: {
-    padding: Spacing.md,
+  mainContainer: {
+    flex: 1,
     maxWidth: 440,
     width: '100%',
     alignSelf: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: Spacing.md,
+  },
+  scrollContent: {
+    paddingTop: Spacing.md,
   },
   headerSection: {
     marginVertical: Spacing.md,
@@ -191,9 +198,9 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     marginTop: 2,
   },
-  actionSection: {
-    marginTop: Spacing.md,
+  bottomActionSection: {
+    paddingVertical: Spacing.md,
+    paddingBottom: Spacing.xl,
     alignItems: 'center',
-    marginTop: 'auto',
   },
 });

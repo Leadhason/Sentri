@@ -51,7 +51,7 @@ export default function RegisterScreen() {
     setLoading(true);
 
     try {
-      await register(fullName, email, activeRole);
+      await register(fullName, email, password, phone, activeRole);
       setLoading(false);
 
       if (activeRole === 'professional') {

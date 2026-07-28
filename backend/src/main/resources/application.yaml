@@ -17,3 +17,8 @@ spring:
   sql:
     init:
       mode: always
+
+supabase:
+  jwt:
+    secret: ${SUPABASE_JWT_SECRET:}
+

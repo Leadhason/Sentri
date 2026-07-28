@@ -14,6 +14,7 @@ import { SentriButton } from '@/components/ui/SentriButton';
 import { SentriHeader } from '@/components/ui/SentriHeader';
 import { TacticalCard } from '@/components/ui/TacticalCard';
 import { Icon } from '@/components/ui/Icon';
+import { useAuth } from '@/context/AuthContext';
 
 const SPECIALIZATIONS = [
   'VIP Bodyguard / Escort',
@@ -28,6 +29,7 @@ const LOCATIONS = ['Accra Central', 'Kumasi', 'Tema Industrial', 'Takoradi Port'
 
 export default function ProSetupScreen() {
   const router = useRouter();
+  const { syncProfile } = useAuth();
 
   const [selectedSpecs, setSelectedSpecs] = useState<string[]>([
     'Event Perimeter Security',
@@ -59,17 +61,21 @@ export default function ProSetupScreen() {
     }
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      router.replace('/(pro)/home' as any);
-    }, 600);
+    await syncProfile({
+      bio,
+      hourlyRate: parseFloat(hourlyRate) || 50,
+      specializations: selectedSpecs,
+      operatingLocations: selectedLocations,
+    });
+    setLoading(false);
+    router.replace('/(pro)/home' as any);
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <SentriHeader title="SENTRI" showBack statusBadge="PRO FILE SETUP" />
+      <SentriHeader title="SENTRI" showBack />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Step Banner */}

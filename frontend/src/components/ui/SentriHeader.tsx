@@ -7,22 +7,18 @@ import { Icon, IconName } from './Icon';
 
 interface SentriHeaderProps {
   title?: string;
-  subtitle?: string;
   showBack?: boolean;
   onBackPress?: () => void;
   rightIcon?: IconName;
   onRightPress?: () => void;
-  statusBadge?: string;
 }
 
 export const SentriHeader: React.FC<SentriHeaderProps> = ({
   title = 'SENTRI',
-  subtitle,
   showBack = false,
   onBackPress,
   rightIcon = 'notifications',
   onRightPress,
-  statusBadge,
 }) => {
   const router = useRouter();
 
@@ -49,19 +45,6 @@ export const SentriHeader: React.FC<SentriHeaderProps> = ({
           <SentriText variant="title" style={styles.brandTitle}>
             {title}
           </SentriText>
-          {subtitle && (
-            <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.subtitleText}>
-              {subtitle}
-            </SentriText>
-          )}
-          {statusBadge && (
-            <View style={styles.badge}>
-              <View style={styles.dot} />
-              <SentriText variant="monoSmall" color={Colors.gold} style={styles.badgeText}>
-                {statusBadge}
-              </SentriText>
-            </View>
-          )}
         </View>
 
         {rightIcon ? (
@@ -114,25 +97,5 @@ const styles = StyleSheet.create({
     color: Colors.gold,
     fontWeight: '700',
     textTransform: 'uppercase',
-  },
-  subtitleText: {
-    fontSize: 10,
-    letterSpacing: 1,
-  },
-  badge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: 2,
-  },
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: Colors.gold,
-  },
-  badgeText: {
-    fontSize: 9,
-    letterSpacing: 1,
   },
 });

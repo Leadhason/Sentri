@@ -185,6 +185,62 @@ This log lists all placeholders, security configurations, missing integrations, 
 47. **Auth Session Engine**: Built `AuthContext` managing role-aware sessions (`client` | `professional`) and JWT token lifecycle.
 48. **Auth & Onboarding Screens**: Implemented `splash.tsx`, `role-selection.tsx`, `register.tsx`, `pro-setup.tsx`, and `login.tsx` matching `sentri_design_mockups` HTML specifications.
 
+## [2026-07-26] Session 12: Frontend Sub-Phase 1C (Client Core Experience & AI Threat Assessment)
 
+### 🎯 Client Navigator & Flow Implementation
+49. **Client Layout Shell**: Created `app/(client)/_layout.tsx` integrating `SentriDock` floating capsule bottom navigator with 4 client tabs (Home, Browse, Activity, Account).
+50. **Client Dashboard (`client_dashboard`)**: Built `app/(client)/home/index.tsx` featuring active deployments counter hero panel, AI assessment trigger card, and recent activity ticket rows.
+51. **AI Threat & Needs Assessment Input (`new_ai_assessment`)**: Built `app/(client)/home/assessment.tsx` with situation description input and routine/emergency urgency selector.
+52. **AI Threat Assessment Results (`assessment_results`)**: Built `app/(client)/home/assessment/results.tsx` showing risk level badge (ELEVATED), index score gauge, AI summary, recommended team breakdown, and total escrow estimate.
+53. **Confirm & Pay (`job_summary_confirm_pay`)**: Built `app/(client)/home/assessment/confirm.tsx` with Paystack escrow protection notice and line-item breakdown.
+54. **Post-Job Dispatch Confirmation (`post_job_confirmation`)**: Built `app/(client)/home/assessment/success.tsx` confirming dispatch lock and live tracking link.
+55. **Browse Guard Directory (`browse_professionals`)**: Built `app/(client)/browse/index.tsx` with search input, specialization filter chips, and guard cards with trust scores.
+56. **Professional Public Profile (`my_professional_profile`)**: Built `app/(client)/browse/[id].tsx` with operative ID, verified status badges, trust score transparency breakdown, and direct booking trigger.
+57. **Activity & Account Screens**: Built `app/(client)/activity/index.tsx` and `app/(client)/account/index.tsx`.
 
+## [2026-07-28] Session 13: Full Stack Auth Reconciliation & PostgreSQL Synchronization
 
+### 🔒 Security & Auth Infrastructure
+58. **Spring Boot OAuth2 Resource Server & JWT Converter (`SecurityConfig.java`)**: Configured `SecurityFilterChain` with custom `JwtDecoder` (supporting `SUPABASE_JWT_SECRET` HS256 & JWKS) and `JwtAuthenticationConverter` mapping Supabase user metadata role claims to `ROLE_CLIENT`, `ROLE_PROFESSIONAL`, and `ROLE_ADMIN` authorities.
+59. **PostgreSQL User Record Sync (`AuthController.java` & `UserService.java`)**: Built `POST /api/auth/sync` endpoint that accepts Supabase authenticated JWT and synchronizes user profiles with PostgreSQL `users`, `clients`, and `professionals` tables using the exact Supabase `sub` UUID.
+60. **Primary Key UUID Alignment (`User.java`)**: Removed Hibernate `@GeneratedValue` sequence annotation on `User` entity to allow explicit primary key assignment matching Supabase Auth UUIDs.
+
+### 🔌 Frontend Supabase Auth Integration & API Interceptor
+61. **Supabase React Native Client (`src/lib/supabase.ts`)**: Initialized Supabase client with `@react-native-async-storage/async-storage` session persistence.
+62. **Authenticated API Client (`src/lib/apiClient.ts`)**: Implemented HTTP request wrapper that automatically attaches `Authorization: Bearer <access_token>` retrieved from active Supabase session.
+63. **Auth Context Real Session Engine (`src/context/AuthContext.tsx`)**: Replaced mock authentication engine with real Supabase `signInWithPassword`, `signUp`, `signOut`, `onAuthStateChange` listener, and automatic sync via `POST /api/auth/sync`.
+64. **Auth Screens Wiring (`login.tsx`, `register.tsx`, `pro-setup.tsx`)**: Connected login, registration, and guard onboarding forms to the real authentication and profile synchronization pipeline.
+65. **Environment Property Configurations (`.env`)**: Updated [backend/.env](file:///home/leadhason/Projects/sentri/backend/.env) with Neon PostgreSQL credentials (`SPRING_DATASOURCE_USERNAME=neondb_owner`) and `SUPABASE_JWT_SECRET`. Created [frontend/.env](file:///home/leadhason/Projects/sentri/frontend/.env) with `EXPO_PUBLIC_API_URL`, `EXPO_PUBLIC_SUPABASE_URL`, and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+
+## [2026-07-28] Session 14: Client AI Assessment & Job Booking Flow Reconciliation
+
+### 🔌 Client Flow End-to-End API Integration
+66. **AI Assessment Trigger (`app/(client)/home/assessment.tsx`)**: Connected situation description and parameters input to backend `POST /api/assess` endpoint with fallback handling.
+67. **Assessment Results Navigation (`app/(client)/home/assessment/results.tsx`)**: Wired real Claude AI threat analysis output, index score gauge, summary, and recommendation breakdown with route parameter passing.
+68. **Job Conversion & Escrow Dispatch (`app/(client)/home/assessment/confirm.tsx`)**: Connected escrow booking confirmation to backend `POST /api/jobs/from-assessment/{assessmentId}` endpoint.
+69. **Dispatch Confirmation (`app/(client)/home/assessment/success.tsx`)**: Displayed dynamic `JOB-xxxx` dispatch ID and live tracking status.
+
+## [2026-07-28] Session 15: Guard Directory, Dispatch & Trust Score Reconciliation
+
+### 🔌 Existing UI API Reconciliation
+70. **Guard Directory & Search (`app/(client)/browse/index.tsx`)**: Connected guard directory list to backend `GET /api/professionals` endpoint with specialization filtering.
+71. **Guard Public Profile (`app/(client)/browse/[id].tsx`)**: Connected guard details to backend `GET /api/professionals/{id}` endpoint.
+72. **Dispatch Acceptance (`app/(pro)/home/request/[id]/accept.tsx`)**: Connected dispatch acceptance to backend `PATCH /api/bookings/{id}/accept` endpoint.
+73. **Trust Score Breakdown (`app/(pro)/score/index.tsx`)**: Connected guard trust score view to backend `GET /api/professionals/me/score` endpoint.
+
+## [2026-07-28] Session 16: Comprehensive Master Database Seeding
+
+### 🗄️ Database Initialization & Seed Data
+74. **Master SQL Seed Script (`backend/src/main/resources/data.sql`)**: Created comprehensive master database seed populating:
+    - Default system settings (`anomaly.location_departure_meters: 500`, `inactivity_minutes: 45`, `late_start_minutes: 20`, `checkin_interval_minutes: 30`, `max-ai-adjustment: 15`).
+    - Seed Admin (`admin@sentri.com`), Clients (`client.kwame@sentri.com`, `client.abena@sentri.com`), and Professionals (`Kwame Mensah`, `Kofi Owusu`, `Abena Appiah`) with complete profiles, hourly rates, specializations, and trust scores.
+    - Seed Jobs & Active Bookings (`Labadi Beach Event Guarding`, `Airport Area VIP Escort`), Paystack Escrow records, verification documents, and AI score reviews.
+
+## [2026-07-28] Session 17: Phase 2 Complete Frontend Screen Implementation
+
+### 📱 New UI Screens & Flow Implementation
+75. **Active Job Live Monitoring (`app/(client)/home/active/[id].tsx`)**: Built live satellite sector map card, pulsing status indicator, and incident feed connected to `GET /api/bookings/{id}` and `GET /api/incidents/booking/{bookingId}`.
+76. **Field Incident Logger (`app/(pro)/home/incident.tsx`)**: Built guard field incident reporter with issue category selector, detailed description input, severity chips, evidence photo attachment, and submission via `POST /api/incidents`.
+77. **Verification Document Vault (`app/(pro)/account/documents.tsx`)**: Built guard document management vault displaying active licenses and upload action triggering `POST /api/documents`.
+78. **AI Post-Job Report Viewer (`app/shared/report/[id].tsx`)**: Built executive summary card, severity meters, timestamped event log, and PDF export trigger connected to `GET /api/jobs/{jobId}/report`.
+79. **In-App Call Screen (`app/shared/call.tsx`)**: Built tactical voice/video call screen featuring animated radar pulse avatar, live status timer, mute toggle, speaker control, and end call handler.
