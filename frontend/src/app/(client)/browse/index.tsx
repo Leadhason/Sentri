@@ -19,27 +19,27 @@ const FILTERS = ['ALL', 'VIP ESCORT', 'CROWD CONTROL', 'STATIC GUARD'];
 
 const MOCK_GUARDS = [
   {
-    id: 'pro_1',
+    id: '22222222-2222-2222-2222-222222222221',
     fullName: 'Kwame Mensah',
-    specializations: ['VIP ESCORT & CLOSE PROTECTION'],
+    specializations: ['VIP ESCORT & CLOSE PROTECTION', 'EVENT PERIMETER SECURITY'],
     hourlyRate: 120,
     trustScore: 96,
     completedJobsCount: 142,
     verificationStatus: 'verified',
   },
   {
-    id: 'pro_2',
+    id: '22222222-2222-2222-2222-222222222222',
     fullName: 'Kofi Owusu',
-    specializations: ['CROWD CONTROL & VENUE'],
+    specializations: ['CROWD CONTROL & VENUE', 'STATIC GUARD DUTY'],
     hourlyRate: 85,
     trustScore: 92,
     completedJobsCount: 98,
     verificationStatus: 'verified',
   },
   {
-    id: 'pro_3',
+    id: '22222222-2222-2222-2222-222222222223',
     fullName: 'Abena Appiah',
-    specializations: ['STATIC GUARD & ASSET PROTECTION'],
+    specializations: ['STATIC GUARD & ASSET PROTECTION', 'VIP ESCORT'],
     hourlyRate: 90,
     trustScore: 94,
     completedJobsCount: 115,
@@ -60,11 +60,18 @@ export default function BrowseProfessionalsScreen() {
       setLoading(true);
       try {
         const res = await apiClient.get<any>('/api/professionals');
-        if (res?.content && Array.isArray(res.content) && res.content.length > 0) {
-          setGuards(res.content);
+        let fetchedList: any[] = [];
+        if (res?.content && Array.isArray(res.content)) {
+          fetchedList = res.content;
+        } else if (Array.isArray(res)) {
+          fetchedList = res;
+        }
+
+        if (fetchedList.length > 0) {
+          setGuards(fetchedList);
         }
       } catch {
-        // Fallback to MOCK_GUARDS if backend empty or offline
+        // Keep initial seeded mock guards
       } finally {
         setLoading(false);
       }
@@ -74,7 +81,10 @@ export default function BrowseProfessionalsScreen() {
 
   const filteredGuards = guards.filter((guard) => {
     const name = guard.fullName || guard.name || '';
-    const specs = Array.isArray(guard.specializations) ? guard.specializations.join(' ') : (guard.specialization || '');
+    const specs = Array.isArray(guard.specializations)
+      ? guard.specializations.join(' ')
+      : String(guard.specialization || '');
+
     const matchesSearch =
       name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       specs.toLowerCase().includes(searchQuery.toLowerCase());
@@ -133,50 +143,60 @@ export default function BrowseProfessionalsScreen() {
 
         {/* Guard List */}
         <View style={styles.guardList}>
-          {filteredGuards.map((guard) => (
-            <TacticalCard
-              key={guard.id}
-              interactive
-              onPress={() => router.push(`/(client)/browse/${guard.id}` as any)}
-              backgroundColor={Colors.surface}
-              borderColor={Colors.border}
-              accentColor={Colors.gold}
-              style={styles.guardCard}
-            >
-              <View style={styles.cardTop}>
-                <View style={styles.avatarBox}>
-                  <Icon name="person" size={24} color={Colors.gold} />
-                </View>
+          {filteredGuards.map((guard) => {
+            const displayName = guard.fullName || guard.name || 'Tactical Guard';
+            const displaySpecs = Array.isArray(guard.specializations) && guard.specializations.length > 0
+              ? guard.specializations[0]
+              : (guard.specialization || 'VIP ESCORT & CLOSE PROTECTION');
+            const displayRate = guard.hourlyRate ? `GHS ${guard.hourlyRate}/HR` : (guard.rate || 'GHS 100/HR');
+            const displayScore = guard.trustScore ?? guard.score ?? 96;
+            const isVerified = guard.verificationStatus === 'verified' || guard.verified === true;
 
-                <View style={styles.cardHeaderInfo}>
-                  <View style={styles.nameRow}>
-                    <SentriText variant="h3" style={styles.guardName}>
-                      {guard.name}
-                    </SentriText>
-                    {guard.verified && (
-                      <Icon name="shield-checkmark" size={16} color={Colors.gold} />
-                    )}
+            return (
+              <TacticalCard
+                key={guard.id || displayName}
+                interactive
+                onPress={() => router.push(`/(client)/browse/${guard.id}` as any)}
+                backgroundColor={Colors.surface}
+                borderColor={Colors.border}
+                accentColor={Colors.gold}
+                style={styles.guardCard}
+              >
+                <View style={styles.cardTop}>
+                  <View style={styles.avatarBox}>
+                    <Icon name="person" size={24} color={Colors.gold} />
                   </View>
-                  <SentriText variant="monoSmall" color={Colors.gold}>
-                    {guard.specialization}
-                  </SentriText>
-                </View>
-              </View>
 
-              <View style={styles.cardBottom}>
-                <View>
-                  <SentriText variant="monoSmall" color={Colors.textSecondary}>RATE</SentriText>
-                  <SentriText variant="mono" color={Colors.text}>{guard.rate}</SentriText>
+                  <View style={styles.cardHeaderInfo}>
+                    <View style={styles.nameRow}>
+                      <SentriText variant="h3" style={styles.guardName}>
+                        {displayName}
+                      </SentriText>
+                      {isVerified && (
+                        <Icon name="shield-checkmark" size={16} color={Colors.gold} />
+                      )}
+                    </View>
+                    <SentriText variant="monoSmall" color={Colors.gold}>
+                      {displaySpecs}
+                    </SentriText>
+                  </View>
                 </View>
 
-                <View style={styles.scoreBadge}>
-                  <Icon name="star" size={14} color={Colors.gold} />
-                  <SentriText variant="mono" color={Colors.gold}>{guard.score}</SentriText>
-                  <SentriText variant="caption" color={Colors.textMuted}>/100</SentriText>
+                <View style={styles.cardBottom}>
+                  <View>
+                    <SentriText variant="monoSmall" color={Colors.textSecondary}>RATE</SentriText>
+                    <SentriText variant="mono" color={Colors.text}>{displayRate}</SentriText>
+                  </View>
+
+                  <View style={styles.scoreBadge}>
+                    <Icon name="star" size={14} color={Colors.gold} />
+                    <SentriText variant="mono" color={Colors.gold}>{displayScore}</SentriText>
+                    <SentriText variant="caption" color={Colors.textMuted}>/100</SentriText>
+                  </View>
                 </View>
-              </View>
-            </TacticalCard>
-          ))}
+              </TacticalCard>
+            );
+          })}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -251,31 +271,27 @@ const styles = StyleSheet.create({
   },
   cardTop: {
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 12,
     marginBottom: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-    paddingBottom: 12,
   },
   avatarBox: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.surfaceElevated,
+    borderWidth: 1,
+    borderColor: Colors.border,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: Colors.gold,
   },
   cardHeaderInfo: {
     flex: 1,
+    justifyContent: 'center',
   },
   nameRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    marginBottom: 2,
   },
   guardName: {
     fontSize: 16,
@@ -284,16 +300,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: Spacing.xs,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
   },
   scoreBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: 'rgba(240, 167, 59, 0.12)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: Colors.gold,
   },
 });

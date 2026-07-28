@@ -244,3 +244,18 @@ This log lists all placeholders, security configurations, missing integrations, 
 77. **Verification Document Vault (`app/(pro)/account/documents.tsx`)**: Built guard document management vault displaying active licenses and upload action triggering `POST /api/documents`.
 78. **AI Post-Job Report Viewer (`app/shared/report/[id].tsx`)**: Built executive summary card, severity meters, timestamped event log, and PDF export trigger connected to `GET /api/jobs/{jobId}/report`.
 79. **In-App Call Screen (`app/shared/call.tsx`)**: Built tactical voice/video call screen featuring animated radar pulse avatar, live status timer, mute toggle, speaker control, and end call handler.
+
+## [2026-07-28] Session 18: Expo Environment Variable Prefix Alignment
+
+### 🛠️ Environment Configuration
+80. **Supabase Client & .env Alignment (`src/lib/supabase.ts`, `.env`)**: Corrected environment variable prefixes in `frontend/.env` from `NEXT_PUBLIC_` to `EXPO_PUBLIC_SUPABASE_URL=https://kvdfogxxqpvdicooreqm.supabase.co` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_yeCxO60qnGkqcCDd-r0XsQ_PeigeV9Y`. Updated `src/lib/supabase.ts` to read `EXPO_PUBLIC_` with `NEXT_PUBLIC_` fallbacks and direct default credentials to prevent requests routing to dummy mock URLs.
+
+## [2026-07-28] Session 19: Spring Security CORS & Preflight OPTIONS Fix
+
+### 🔐 Security & Cross-Origin Configuration
+81. **Spring Security CORS Configuration (`SecurityConfig.java`)**: Configured global `CorsConfigurationSource` allowing `GET, POST, PUT, PATCH, DELETE, OPTIONS` methods across all origin patterns (`*`) and headers (`*`). Explicitly permitted unauthenticated `HttpMethod.OPTIONS` preflight requests and `/api/auth/**` endpoints to prevent 401 Unauthorized preflight rejections.
+
+## [2026-07-28] Session 20: Browse Screen DTO & Seed Data Property Normalization
+
+### 🐛 Frontend Data Binding & DTO Alignment
+82. **Browse Screen Card Rendering (`app/(client)/browse/index.tsx`)**: Normalized backend `ProfessionalResponse` DTO property keys (`fullName`, `specializations`, `hourlyRate`, `trustScore`, `verificationStatus`) with UI component props (`name`, `specialization`, `rate`, `score`, `verified`). Replaced legacy mock IDs with seeded database UUIDs (`22222222-2222-2222-2222-222222222221`) to ensure seamless detail screen navigation (`/browse/[id]`).
