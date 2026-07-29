@@ -22,28 +22,79 @@ const MOCK_GUARDS = [
     id: '22222222-2222-2222-2222-222222222221',
     fullName: 'Kwame Mensah',
     specializations: ['VIP ESCORT & CLOSE PROTECTION', 'EVENT PERIMETER SECURITY'],
+    operatingLocations: ['Accra Central', 'East Legon', 'Airport Residential'],
     hourlyRate: 120,
     trustScore: 96,
+    rating: 4.9,
     completedJobsCount: 142,
     verificationStatus: 'verified',
+    bio: '5+ years tactical experience in close VIP bodyguard detail, crowd management, and venue perimeter security across Greater Accra.',
+    expertise: ['Close Protection', 'Armed Guard', 'Perimeter Control'],
   },
   {
     id: '22222222-2222-2222-2222-222222222222',
     fullName: 'Kofi Owusu',
     specializations: ['CROWD CONTROL & VENUE', 'STATIC GUARD DUTY'],
+    operatingLocations: ['Labadi', 'Osu', 'Kumasi Central'],
     hourlyRate: 85,
     trustScore: 92,
+    rating: 4.8,
     completedJobsCount: 98,
     verificationStatus: 'verified',
+    bio: 'Crowd control and tactical venue security specialist with high-volume concert and event protection experience.',
+    expertise: ['Crowd Control', 'Event Security', 'De-escalation'],
   },
   {
     id: '22222222-2222-2222-2222-222222222223',
     fullName: 'Abena Appiah',
     specializations: ['STATIC GUARD & ASSET PROTECTION', 'VIP ESCORT'],
+    operatingLocations: ['Tema Industrial', 'Accra Central', 'Cantonments'],
     hourlyRate: 90,
     trustScore: 94,
+    rating: 4.95,
     completedJobsCount: 115,
     verificationStatus: 'verified',
+    bio: 'Static guard duty & asset protection specialist. Certified close-quarters protective operative.',
+    expertise: ['Asset Protection', 'Access Control', 'First Aid / CPR'],
+  },
+  {
+    id: '22222222-2222-2222-2222-222222222224',
+    fullName: 'Emmanuel Tetteh',
+    specializations: ['VIP ESCORT & DIPLOMATIC DETAIL', 'MOTORCADE SECURITY'],
+    operatingLocations: ['Cantonments', 'Ridge Enclave', 'Airport Residential'],
+    hourlyRate: 135,
+    trustScore: 98,
+    rating: 5.0,
+    completedJobsCount: 180,
+    verificationStatus: 'verified',
+    bio: 'Ex-military close protection officer specializing in diplomatic escorts, motorcade security, and high-threat VIP transport.',
+    expertise: ['Diplomatic Escort', 'Motorcade', 'Advanced Defensive Driving'],
+  },
+  {
+    id: '22222222-2222-2222-2222-222222222225',
+    fullName: 'Grace Adjei',
+    specializations: ['EXECUTIVE PROTECTION', 'EVENT ACCESS MONITORING'],
+    operatingLocations: ['East Legon', 'Airport Area', 'Labone'],
+    hourlyRate: 110,
+    trustScore: 95,
+    rating: 4.9,
+    completedJobsCount: 104,
+    verificationStatus: 'verified',
+    bio: 'Executive protection specialist trained in covert surveillance detection, access point management, and female VIP close protection.',
+    expertise: ['Executive Protection', 'Surveillance', 'Access Control'],
+  },
+  {
+    id: '22222222-2222-2222-2222-222222222226',
+    fullName: 'Yaw Baah',
+    specializations: ['STATIC GUARD & WAREHOUSE SECURITY', 'NIGHT PATROL'],
+    operatingLocations: ['Spintex Industrial', 'Tema Harbor Zone', 'Achimota'],
+    hourlyRate: 75,
+    trustScore: 91,
+    rating: 4.75,
+    completedJobsCount: 86,
+    verificationStatus: 'verified',
+    bio: 'Industrial security and warehouse perimeter specialist experienced in night patrol surveillance and asset loss prevention.',
+    expertise: ['Industrial Security', 'Night Patrol', 'Loss Prevention'],
   },
 ];
 
@@ -84,10 +135,14 @@ export default function BrowseProfessionalsScreen() {
     const specs = Array.isArray(guard.specializations)
       ? guard.specializations.join(' ')
       : String(guard.specialization || '');
+    const locs = Array.isArray(guard.operatingLocations)
+      ? guard.operatingLocations.join(' ')
+      : String(guard.operatingLocations || '');
 
     const matchesSearch =
       name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      specs.toLowerCase().includes(searchQuery.toLowerCase());
+      specs.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      locs.toLowerCase().includes(searchQuery.toLowerCase());
 
     if (activeFilter === 'ALL') return matchesSearch;
     return matchesSearch && specs.toUpperCase().includes(activeFilter);
@@ -108,7 +163,7 @@ export default function BrowseProfessionalsScreen() {
             <Icon name="search" size={18} color={Colors.textMuted} />
             <TextInput
               style={styles.searchInput}
-              placeholder="SEARCH BY NAME OR SPECIALIZATION..."
+              placeholder="SEARCH BY NAME, LOCATION OR SPECIALIZATION..."
               placeholderTextColor={Colors.textMuted}
               value={searchQuery}
               onChangeText={setSearchQuery}
@@ -141,16 +196,27 @@ export default function BrowseProfessionalsScreen() {
           </ScrollView>
         </View>
 
-        {/* Guard List */}
+        {/* Beefed-Up Guard List */}
         <View style={styles.guardList}>
           {filteredGuards.map((guard) => {
             const displayName = guard.fullName || guard.name || 'Tactical Guard';
             const displaySpecs = Array.isArray(guard.specializations) && guard.specializations.length > 0
               ? guard.specializations[0]
               : (guard.specialization || 'VIP ESCORT & CLOSE PROTECTION');
-            const displayRate = guard.hourlyRate ? `GHS ${guard.hourlyRate}/HR` : (guard.rate || 'GHS 100/HR');
+            const displayLocations = Array.isArray(guard.operatingLocations) && guard.operatingLocations.length > 0
+              ? guard.operatingLocations.join(' • ')
+              : 'Accra Central • East Legon';
+            const displayRate = guard.hourlyRate ? `GHS ${guard.hourlyRate}` : 'GHS 100';
             const displayScore = guard.trustScore ?? guard.score ?? 96;
+            const displayRating = guard.rating || (displayScore >= 95 ? 4.9 : 4.8);
+            const completedJobs = guard.completedJobsCount || 120;
             const isVerified = guard.verificationStatus === 'verified' || guard.verified === true;
+            const bioText = guard.bio || 'Tactical security operative trained in crowd control, VIP escort, and perimeter access monitoring.';
+            const expertiseList: string[] = Array.isArray(guard.expertise) && guard.expertise.length > 0
+              ? guard.expertise
+              : Array.isArray(guard.specializations)
+              ? guard.specializations.slice(0, 3)
+              : ['Close Protection', 'Perimeter Control', 'Tactical Security'];
 
             return (
               <TacticalCard
@@ -162,9 +228,10 @@ export default function BrowseProfessionalsScreen() {
                 accentColor={Colors.gold}
                 style={styles.guardCard}
               >
+                {/* Top Row: Avatar, Name, Verified Badge & Specialization */}
                 <View style={styles.cardTop}>
                   <View style={styles.avatarBox}>
-                    <Icon name="person" size={24} color={Colors.gold} />
+                    <Icon name="person" size={26} color={Colors.gold} />
                   </View>
 
                   <View style={styles.cardHeaderInfo}>
@@ -173,25 +240,78 @@ export default function BrowseProfessionalsScreen() {
                         {displayName}
                       </SentriText>
                       {isVerified && (
-                        <Icon name="shield-checkmark" size={16} color={Colors.gold} />
+                        <View style={styles.verifiedBadge}>
+                          <Icon name="shield-checkmark" size={14} color={Colors.gold} />
+                          <SentriText variant="caption" color={Colors.gold} style={styles.verifiedText}>
+                            VERIFIED
+                          </SentriText>
+                        </View>
                       )}
                     </View>
-                    <SentriText variant="monoSmall" color={Colors.gold}>
+
+                    <SentriText variant="monoSmall" color={Colors.gold} style={styles.specText}>
                       {displaySpecs}
                     </SentriText>
                   </View>
                 </View>
 
-                <View style={styles.cardBottom}>
-                  <View>
-                    <SentriText variant="monoSmall" color={Colors.textSecondary}>RATE</SentriText>
-                    <SentriText variant="mono" color={Colors.text}>{displayRate}</SentriText>
+                {/* Performance Metrics Row: Trust Score & Star Rating */}
+                <View style={styles.metricsRow}>
+                  <View style={styles.trustScorePill}>
+                    <Icon name="shield" size={14} color={Colors.gold} />
+                    <SentriText variant="mono" color={Colors.gold} style={styles.metricValText}>
+                      {displayScore}
+                    </SentriText>
+                    <SentriText variant="caption" color={Colors.textMuted}>/100 TRUST</SentriText>
                   </View>
 
-                  <View style={styles.scoreBadge}>
+                  <View style={styles.ratingPill}>
                     <Icon name="star" size={14} color={Colors.gold} />
-                    <SentriText variant="mono" color={Colors.gold}>{displayScore}</SentriText>
-                    <SentriText variant="caption" color={Colors.textMuted}>/100</SentriText>
+                    <SentriText variant="mono" color={Colors.text}>
+                      {displayRating}
+                    </SentriText>
+                    <SentriText variant="caption" color={Colors.textMuted}>
+                      ({completedJobs} Ops)
+                    </SentriText>
+                  </View>
+                </View>
+
+                {/* Operating Locations */}
+                <View style={styles.locationRow}>
+                  <Icon name="location" size={14} color={Colors.textSecondary} />
+                  <SentriText variant="caption" color={Colors.textSecondary} numberOfLines={1}>
+                    {displayLocations}
+                  </SentriText>
+                </View>
+
+                {/* Bio Excerpt */}
+                <SentriText variant="body" color={Colors.textSecondary} numberOfLines={2} style={styles.bioText}>
+                  {bioText}
+                </SentriText>
+
+                {/* Expertise Chips */}
+                <View style={styles.expertiseRow}>
+                  {expertiseList.map((item, idx) => (
+                    <View key={idx} style={styles.expertiseChip}>
+                      <SentriText variant="caption" color={Colors.textMuted} style={styles.expertiseChipText}>
+                        {item}
+                      </SentriText>
+                    </View>
+                  ))}
+                </View>
+
+                {/* Bottom Footer Row: Hourly Rate & Action Indicator */}
+                <View style={styles.cardBottom}>
+                  <View style={styles.rateBox}>
+                    <SentriText variant="caption" color={Colors.textSecondary}>HOURLY RATE</SentriText>
+                    <SentriText variant="h3" color={Colors.gold} style={styles.rateValText}>
+                      {displayRate} / HR
+                    </SentriText>
+                  </View>
+
+                  <View style={styles.viewProfileLink}>
+                    <SentriText variant="monoSmall" color={Colors.gold}>VIEW PROFILE</SentriText>
+                    <Icon name="chevron-forward" size={16} color={Colors.gold} />
                   </View>
                 </View>
               </TacticalCard>
@@ -238,7 +358,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: Colors.text,
     fontFamily: 'IBMPlexMono_400Regular',
-    fontSize: 12,
+    fontSize: 11,
   },
   chipScroll: {
     marginTop: 4,
@@ -264,7 +384,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   guardList: {
-    gap: Spacing.sm,
+    gap: Spacing.md,
   },
   guardCard: {
     padding: Spacing.md,
@@ -272,12 +392,12 @@ const styles = StyleSheet.create({
   cardTop: {
     flexDirection: 'row',
     gap: 12,
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.xs,
   },
   avatarBox: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: Colors.surfaceElevated,
     borderWidth: 1,
     borderColor: Colors.border,
@@ -291,10 +411,88 @@ const styles = StyleSheet.create({
   nameRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     gap: 6,
   },
   guardName: {
-    fontSize: 16,
+    fontSize: 17,
+  },
+  verifiedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(240, 167, 59, 0.12)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(240, 167, 59, 0.3)',
+  },
+  verifiedText: {
+    fontSize: 9,
+    fontWeight: '700',
+  },
+  specText: {
+    fontSize: 11,
+    marginTop: 2,
+  },
+  metricsRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginVertical: Spacing.xs,
+  },
+  trustScorePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: Colors.surfaceElevated,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  ratingPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: Colors.surfaceElevated,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  metricValText: {
+    fontSize: 13,
+  },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: Spacing.xs,
+  },
+  bioText: {
+    fontSize: 13,
+    lineHeight: 18,
+    marginBottom: Spacing.xs,
+  },
+  expertiseRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: Spacing.md,
+  },
+  expertiseChip: {
+    backgroundColor: Colors.surfaceElevated,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+  },
+  expertiseChipText: {
+    fontSize: 10,
   },
   cardBottom: {
     flexDirection: 'row',
@@ -304,7 +502,13 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: Colors.border,
   },
-  scoreBadge: {
+  rateBox: {
+    gap: 2,
+  },
+  rateValText: {
+    fontSize: 16,
+  },
+  viewProfileLink: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,

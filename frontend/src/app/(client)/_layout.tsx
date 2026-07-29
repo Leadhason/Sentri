@@ -7,8 +7,8 @@ import { SentriDock, TabItem } from '@/components/ui/SentriDock';
 const CLIENT_TABS: TabItem[] = [
   { key: 'home', label: 'Home', icon: 'home', route: '/(client)/home' },
   { key: 'browse', label: 'Browse', icon: 'search', route: '/(client)/browse' },
-  { key: 'activity', label: 'Activity', icon: 'activity', route: '/(client)/activity' },
-  { key: 'account', label: 'Account', icon: 'user', route: '/(client)/account' },
+  { key: 'activity', label: 'Jobs', icon: 'shield', route: '/(client)/activity' },
+  { key: 'account', label: 'Profile', icon: 'user', route: '/(client)/account' },
 ];
 
 export default function ClientLayout() {

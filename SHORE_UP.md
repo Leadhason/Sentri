@@ -259,3 +259,81 @@ This log lists all placeholders, security configurations, missing integrations, 
 
 ### 🐛 Frontend Data Binding & DTO Alignment
 82. **Browse Screen Card Rendering (`app/(client)/browse/index.tsx`)**: Normalized backend `ProfessionalResponse` DTO property keys (`fullName`, `specializations`, `hourlyRate`, `trustScore`, `verificationStatus`) with UI component props (`name`, `specialization`, `rate`, `score`, `verified`). Replaced legacy mock IDs with seeded database UUIDs (`22222222-2222-2222-2222-222222222221`) to ensure seamless detail screen navigation (`/browse/[id]`).
+
+## [2026-07-29] Session 21: Header Component Style Polish & Clean Border Styling
+
+### 🎨 Design System Polish
+83. **SentriHeader Component Styling (`src/components/ui/SentriHeader.tsx`)**: Removed bottom border (`borderBottomWidth`, `borderBottomColor`) from header bar component for seamless dark-mode visual integration.
+
+## [2026-07-29] Session 22: Client Dashboard Redesign & Layout Re-ordering
+
+### 🎨 Client Dashboard Redesign
+84. **Client Dashboard Redesign (`app/(client)/home/index.tsx`)**: Redesigned client dashboard layout following strict section order:
+    1. Tactical greeting header (`Welcome back, Kwame`).
+    2. Metrics boxes grid (`Jobs Posted`, `Active Jobs`, `Guards Hired`).
+    3. Primary action button (`START AI THREAT ASSESSMENT →`).
+    4. Recent Threat Assessment summary card with threat index score.
+    5. Job history & active dispatches list.
+    6. Popular verified professionals carousel cards with trust scores and direct profile links.
+
+## [2026-07-29] Session 23: Client Dashboard Dispatches Separation & Non-Slider Layout
+
+### 🎨 Client Dashboard Refinement
+85. **Client Dashboard Grouping & Non-Slider Pro List (`app/(client)/home/index.tsx`)**:
+    - Separated `ACTIVE DISPATCHES` (live on-duty deployments) and `JOB HISTORY` (past/closed deployments) into distinct dedicated sections.
+    - Converted popular verified professionals from horizontal slider carousel to vertical full-width list items with trust scores, hourly rates, specializations, and direct profile navigation.
+
+## [2026-07-29] Session 24: Client Dashboard Syntax Typo Fix
+
+### 🐛 Bug Fixes
+86. **Style Property Syntax Fix (`app/(client)/home/index.tsx`)**: Fixed style property typo `justify.content` to `justifyContent` in `assessmentCardHeader` style block.
+
+## [2026-07-29] Session 25: Client Jobs Tab Renaming & Segmented Filter Tabs
+
+### 📱 Navigation & Jobs Screen Refinement
+87. **Client Navigation & Jobs Screen Redesign (`app/(client)/_layout.tsx`, `app/(client)/activity/index.tsx`)**:
+    - Renamed dock tab label from `Activity` to `Jobs`.
+    - Added top tactical segmented filter control tabs (`ACTIVE` vs `COMPLETED`) on the Jobs screen.
+    - Added rich demo security deployment tickets (*Labadi Beach Event, East Legon Estate, Airport Escort, Osu Concert, Tema Industrial, Cantonments Diplomatic*) for padding.
+
+## [2026-07-29] Session 26: Jobs Screen Segmented Tabs Alignment (Active & Pending)
+
+### 📱 Jobs Screen Refinement
+88. **Segmented Filter Tabs Alignment (`app/(client)/activity/index.tsx`)**: Updated top filter tabs to strictly feature `ACTIVE` (live geofenced deployments) and `PENDING` (deployments under assessment or awaiting guard acceptance).
+
+## [2026-07-29] Session 27: 3-Segment Filter Bar for Jobs Screen
+
+### 📱 Jobs Screen Refinement
+89. **3-Tab Segmented Filter Bar (`app/(client)/activity/index.tsx`)**: Expanded top segmented control bar to feature 3 distinct category tabs (`ACTIVE`, `PENDING`, `DONE`) with dedicated deployment tickets per status category.
+
+## [2026-07-29] Session 28: Jobs Screen Style Property Syntax Fix
+
+### 🐛 Bug Fixes
+90. **Style Property Syntax Fix (`app/(client)/activity/index.tsx`)**: Fixed style property typo `justify.content` to `justifyContent` in `segmentBtn` style block.
+
+## [2026-07-29] Session 29: Browse Screen Professional Cards Enhancement
+
+### 🎨 UI & Information Architecture Polish
+91. **Rich Operative Cards (`app/(client)/browse/index.tsx`)**: Beefed up professional operative cards on the browse screen displaying:
+    - Verified Operative status badge.
+    - Trust Score gauge (`96/100 TRUST`) & Star rating (`4.9 ★` across completed ops count).
+    - Operating Locations pin row (*Accra Central • East Legon • Airport Area*).
+    - 2-line tactical experience bio snippet.
+    - Specific expertise chips (*Close Protection*, *Armed Guard*, *Perimeter Control*).
+    - Hourly rate banner and direct `View Profile →` navigation.
+
+## [2026-07-29] Session 30: Dummy Professionals Expansion
+
+### 📱 Browse Screen Data Expansion
+92. **Expanded Professional Operatives List (`app/(client)/browse/index.tsx`)**: Added 3 additional dummy professionals (*Emmanuel Tetteh - Diplomatic Escort*, *Grace Adjei - Executive Protection*, *Yaw Baah - Industrial Night Patrol*) with trust scores (`91-98`), rates, operating locations, and specific expertise tags.
+
+## [2026-07-29] Session 31: Profile Screen Redesign & Consumer App Tone Alignment
+
+### 📱 Profile & Navigation Refinement
+93. **Consumer Profile Screen Redesign (`app/(client)/_layout.tsx`, `app/(client)/account/index.tsx`)**:
+    - Renamed dock navigation tab from `Account` to `Profile`.
+    - Redesigned Profile screen with consumer-friendly terminology (relaxed military jargon).
+    - Added user avatar card with `VERIFIED CLIENT` badge, email, phone, and assessment credit counter.
+    - Added **Payments & Billing** section (`Paystack / Card / Mobile Money`, `Escrow & Payment History`).
+    - Added **Notifications & Alerts** section with interactive toggles (`Push Notifications`, `SMS & Call Alerts`).
+    - Added **Security & Support** section (`Password & Security`, `24/7 Customer Support`) and Log Out confirmation dialog.
