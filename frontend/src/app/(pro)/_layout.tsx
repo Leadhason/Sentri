@@ -6,9 +6,9 @@ import { SentriDock, TabItem } from '@/components/ui/SentriDock';
 
 const PRO_TABS: TabItem[] = [
   { key: 'home', label: 'Home', icon: 'home', route: '/(pro)/home' },
+  { key: 'offers', label: 'Offers', icon: 'time', route: '/(pro)/offers' },
   { key: 'jobs', label: 'Jobs', icon: 'briefcase', route: '/(pro)/jobs' },
-  { key: 'score', label: 'Score', icon: 'shield-checkmark', route: '/(pro)/score' },
-  { key: 'account', label: 'Account', icon: 'user', route: '/(pro)/account' },
+  { key: 'account', label: 'Profile', icon: 'user', route: '/(pro)/account' },
 ];
 
 export default function ProfessionalLayout() {
@@ -22,8 +22,8 @@ export default function ProfessionalLayout() {
         }}
       >
         <Stack.Screen name="home" />
+        <Stack.Screen name="offers" />
         <Stack.Screen name="jobs" />
-        <Stack.Screen name="score" />
         <Stack.Screen name="account" />
       </Stack>
 

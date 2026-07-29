@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Switch, Alert, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors, Spacing } from '@/constants/theme';
 import { SentriText } from '@/components/ui/SentriText';
@@ -16,18 +16,27 @@ export default function ClientProfileScreen() {
   const [pushNotifications, setPushNotifications] = useState(true);
   const [smsAlerts, setSmsAlerts] = useState(true);
 
-  const handleLogout = () => {
-    Alert.alert('Log Out', 'Are you sure you want to log out of your account?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Log Out',
-        style: 'destructive',
-        onPress: async () => {
-          await logout();
-          router.replace('/login' as any);
+  const handleLogout = async () => {
+    const doLogout = async () => {
+      await logout();
+      router.replace('/splash' as any);
+    };
+
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm('Are you sure you want to log out of your account?');
+      if (confirmed) {
+        await doLogout();
+      }
+    } else {
+      Alert.alert('Log Out', 'Are you sure you want to log out of your account?', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Log Out',
+          style: 'destructive',
+          onPress: doLogout,
         },
-      },
-    ]);
+      ]);
+    }
   };
 
   const clientName = user?.fullName || 'Kwame Darko';

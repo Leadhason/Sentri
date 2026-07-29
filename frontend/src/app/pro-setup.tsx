@@ -17,31 +17,43 @@ import { Icon } from '@/components/ui/Icon';
 import { useAuth } from '@/context/AuthContext';
 
 const SPECIALIZATIONS = [
-  'VIP Bodyguard / Escort',
-  'Crowd Control & Venue',
-  'Static Guard Duty',
-  'Event Perimeter Security',
-  'Emergency Tactical Response',
-  'Asset Protection',
+  'VIP Close Protection',
+  'Event & Venue Security',
+  'Static Guard & Asset Protection',
+  'Executive Motorcade Escort',
+  'Crowd Management',
+  'First Aid & CPR Specialist',
 ];
 
-const LOCATIONS = ['Accra Central', 'Kumasi', 'Tema Industrial', 'Takoradi Port', 'East Legon'];
+const LOCATIONS = [
+  'Accra Central',
+  'East Legon',
+  'Airport Residential',
+  'Cantonments',
+  'Osu & Labone',
+  'Labadi & Spintex',
+  'Tema Industrial Zone',
+  'Kumasi Central',
+];
+
+const PRESET_RATES = ['75', '95', '120', '150'];
 
 export default function ProSetupScreen() {
   const router = useRouter();
   const { syncProfile } = useAuth();
 
   const [selectedSpecs, setSelectedSpecs] = useState<string[]>([
-    'Event Perimeter Security',
-    'Static Guard Duty',
+    'VIP Close Protection',
+    'Event & Venue Security',
   ]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([
     'Accra Central',
     'East Legon',
+    'Airport Residential',
   ]);
-  const [hourlyRate, setHourlyRate] = useState('75');
+  const [hourlyRate, setHourlyRate] = useState('120');
   const [bio, setBio] = useState(
-    '5+ years experience in venue access management and armed VIP security detail.'
+    '5+ years tactical security experience specializing in close VIP bodyguard detail, crowd management, and venue perimeter monitoring.'
   );
   const [loading, setLoading] = useState(false);
 
@@ -65,7 +77,7 @@ export default function ProSetupScreen() {
     setLoading(true);
     await syncProfile({
       bio,
-      hourlyRate: parseFloat(hourlyRate) || 50,
+      hourlyRate: parseFloat(hourlyRate) || 100,
       specializations: selectedSpecs,
       operatingLocations: selectedLocations,
     });
@@ -75,26 +87,31 @@ export default function ProSetupScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <SentriHeader title="SENTRI" showBack />
+      <SentriHeader title="SENTRI" showBack={false} />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Step Banner */}
-        <View style={styles.banner}>
-          <SentriText variant="mono" color={Colors.gold} style={styles.stepTag}>
-            STEP 02 // GUARD PROFILE & SPECIALIZATIONS
+        {/* Progress Bar */}
+        <View style={styles.progressContainer}>
+          <View style={styles.progressFill} />
+        </View>
+
+        {/* Header Section */}
+        <View style={styles.headerSection}>
+          <SentriText variant="monoSmall" color={Colors.gold} style={styles.stepTag}>
+            STEP 2 OF 2 • PROFESSIONAL ONBOARDING
           </SentriText>
-          <SentriText variant="h1" style={styles.heading}>
-            Professional Setup
+          <SentriText variant="h1" style={styles.mainHeading}>
+            Set Up Your Profile
           </SentriText>
           <SentriText variant="body" color={Colors.textSecondary}>
-            Configure your hourly rates and operational details for client discovery.
+            Configure your rates, specializations, and coverage areas so clients can hire you instantly.
           </SentriText>
         </View>
 
-        {/* Specializations Chip Grid */}
+        {/* 1. Specializations Chips */}
         <View style={styles.section}>
           <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.sectionLabel}>
-            SPECIALIZATIONS (SELECT ALL THAT APPLY)
+            YOUR SPECIALIZATIONS (SELECT ALL THAT APPLY) *
           </SentriText>
 
           <View style={styles.chipGrid}>
@@ -108,7 +125,7 @@ export default function ProSetupScreen() {
                   activeOpacity={0.8}
                 >
                   <Icon
-                    name={isSelected ? 'checkmark' : 'shield'}
+                    name={isSelected ? 'shield-checkmark' : 'shield'}
                     size={14}
                     color={isSelected ? Colors.gold : Colors.textMuted}
                   />
@@ -125,36 +142,12 @@ export default function ProSetupScreen() {
           </View>
         </View>
 
-        {/* Hourly Rate Input */}
+        {/* 2. Coverage Locations */}
         <View style={styles.section}>
           <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.sectionLabel}>
-            BASE HOURLY RATE (GHS / HOUR) *
+            OPERATING LOCATIONS & SECTORS *
           </SentriText>
-          <TacticalCard backgroundColor={Colors.surface}>
-            <View style={styles.rateRow}>
-              <SentriText variant="h2" color={Colors.gold} style={styles.currencySymbol}>
-                GHS
-              </SentriText>
-              <TextInput
-                style={styles.rateInput}
-                keyboardType="numeric"
-                value={hourlyRate}
-                onChangeText={setHourlyRate}
-                placeholder="75"
-                placeholderTextColor={Colors.textMuted}
-              />
-              <SentriText variant="mono" color={Colors.textMuted}>
-                / HR
-              </SentriText>
-            </View>
-          </TacticalCard>
-        </View>
 
-        {/* Operating Locations */}
-        <View style={styles.section}>
-          <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.sectionLabel}>
-            OPERATING REGIONS
-          </SentriText>
           <View style={styles.chipGrid}>
             {LOCATIONS.map((loc) => {
               const isSelected = selectedLocations.includes(loc);
@@ -183,29 +176,91 @@ export default function ProSetupScreen() {
           </View>
         </View>
 
-        {/* Bio Input */}
+        {/* 3. Base Hourly Rate */}
         <View style={styles.section}>
           <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.sectionLabel}>
-            TACTICAL SUMMARY & EXPERIENCE
+            BASE HOURLY RATE (GHS / HR) *
           </SentriText>
-          <View style={styles.textAreaContainer}>
+
+          <TacticalCard backgroundColor={Colors.surface} style={styles.rateCard}>
+            <View style={styles.rateRow}>
+              <SentriText variant="h2" color={Colors.gold} style={styles.currencyPrefix}>
+                GHS
+              </SentriText>
+              <TextInput
+                style={styles.rateInput}
+                keyboardType="numeric"
+                value={hourlyRate}
+                onChangeText={setHourlyRate}
+                placeholder="120"
+                placeholderTextColor={Colors.textMuted}
+              />
+              <SentriText variant="mono" color={Colors.textMuted}>
+                / HOUR
+              </SentriText>
+            </View>
+
+            {/* Rate Presets */}
+            <View style={styles.presetRow}>
+              <SentriText variant="caption" color={Colors.textSecondary} style={styles.presetLabel}>
+                QUICK PRESETS:
+              </SentriText>
+              {PRESET_RATES.map((preset) => (
+                <TouchableOpacity
+                  key={preset}
+                  style={[styles.presetBtn, hourlyRate === preset && styles.presetBtnActive]}
+                  onPress={() => setHourlyRate(preset)}
+                  activeOpacity={0.8}
+                >
+                  <SentriText
+                    variant="caption"
+                    color={hourlyRate === preset ? Colors.gold : Colors.textSecondary}
+                  >
+                    GHS {preset}
+                  </SentriText>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </TacticalCard>
+        </View>
+
+        {/* 4. Bio Summary */}
+        <View style={styles.section}>
+          <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.sectionLabel}>
+            PROFESSIONAL SUMMARY & EXPERIENCE *
+          </SentriText>
+
+          <View style={styles.textAreaBox}>
             <TextInput
               style={styles.textArea}
               multiline
               numberOfLines={4}
               value={bio}
               onChangeText={setBio}
-              placeholder="Detail your security background, certifications, or military service..."
+              placeholder="Highlight your security background, military/police experience, CPR certifications, and key strengths..."
               placeholderTextColor={Colors.textMuted}
             />
           </View>
         </View>
 
-        {/* Submit */}
+        {/* Verification Guarantee Notice */}
+        <TacticalCard backgroundColor={Colors.surface} style={styles.noticeCard}>
+          <View style={styles.noticeRow}>
+            <Icon name="shield-checkmark" size={20} color={Colors.gold} />
+            <View style={styles.noticeTextGroup}>
+              <SentriText variant="h3" color={Colors.gold}>Instant Profile Indexing</SentriText>
+              <SentriText variant="caption" color={Colors.textSecondary}>
+                Upon saving, your profile will be published to the client discovery directory for direct booking requests.
+              </SentriText>
+            </View>
+          </View>
+        </TacticalCard>
+
+        {/* Submit Button */}
         <SentriButton
-          title="Complete Profile & Verify →"
+          title="SAVE PROFILE & COMPLETE SETUP →"
           variant="primary"
-          size="lg"
+          size="md"
           loading={loading}
           onPress={handleComplete}
           style={styles.submitBtn}
@@ -222,25 +277,42 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: Spacing.md,
+    maxWidth: 480,
+    width: '100%',
+    alignSelf: 'center',
+    paddingBottom: 100,
   },
-  banner: {
+  progressContainer: {
+    height: 4,
+    backgroundColor: Colors.surfaceElevated,
+    borderRadius: 2,
+    overflow: 'hidden',
     marginBottom: Spacing.md,
+  },
+  progressFill: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: Colors.gold,
+  },
+  headerSection: {
+    marginBottom: Spacing.lg,
   },
   stepTag: {
     fontSize: 11,
-    letterSpacing: 2,
+    letterSpacing: 1,
     marginBottom: 4,
   },
-  heading: {
+  mainHeading: {
+    fontSize: 26,
     marginBottom: 4,
   },
   section: {
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.lg,
   },
   sectionLabel: {
     fontSize: 11,
     letterSpacing: 1,
-    marginBottom: Spacing.xs,
+    marginBottom: 8,
   },
   chipGrid: {
     flexDirection: 'row',
@@ -253,7 +325,7 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 20,
+    borderRadius: 6,
     backgroundColor: Colors.surface,
     borderWidth: 1,
     borderColor: Colors.border,
@@ -263,23 +335,54 @@ const styles = StyleSheet.create({
     borderColor: Colors.gold,
   },
   chipText: {
-    fontSize: 13,
+    fontSize: 12,
+  },
+  rateCard: {
+    padding: Spacing.md,
   },
   rateRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
+    marginBottom: Spacing.sm,
   },
-  currencySymbol: {
-    fontSize: 22,
+  currencyPrefix: {
+    fontSize: 20,
+    fontWeight: '700',
   },
   rateInput: {
     flex: 1,
-    fontSize: 24,
-    fontFamily: 'SpaceGrotesk_700Bold',
     color: Colors.text,
+    fontFamily: 'SpaceGrotesk_700Bold',
+    fontSize: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+    paddingVertical: 2,
   },
-  textAreaContainer: {
+  presetRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingTop: Spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+  },
+  presetLabel: {
+    fontSize: 10,
+  },
+  presetBtn: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    backgroundColor: Colors.surfaceElevated,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  presetBtnActive: {
+    borderColor: Colors.gold,
+    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+  },
+  textAreaBox: {
     backgroundColor: Colors.surface,
     borderWidth: 1,
     borderColor: Colors.border,
@@ -289,12 +392,24 @@ const styles = StyleSheet.create({
   textArea: {
     color: Colors.text,
     fontFamily: 'IBMPlexSans_400Regular',
-    fontSize: 14,
-    minHeight: 80,
+    fontSize: 13,
+    minHeight: 90,
     textAlignVertical: 'top',
   },
+  noticeCard: {
+    padding: Spacing.md,
+    marginBottom: Spacing.lg,
+  },
+  noticeRow: {
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
+  },
+  noticeTextGroup: {
+    flex: 1,
+    gap: 2,
+  },
   submitBtn: {
-    marginTop: Spacing.md,
-    marginBottom: Spacing.xl,
+    marginTop: Spacing.xs,
   },
 });

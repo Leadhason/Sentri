@@ -16,18 +16,35 @@ import { TacticalCard } from '@/components/ui/TacticalCard';
 import { Icon } from '@/components/ui/Icon';
 import { apiClient } from '@/lib/apiClient';
 
+const EVENT_TYPES = [
+  'Event & Venue Security',
+  'VIP Close Escort',
+  'Home & Asset Protection',
+  'Executive Transport',
+];
+
+const LOCATIONS = ['Accra Central', 'East Legon', 'Airport Area', 'Osu', 'Cantonments', 'Labadi'];
+
+const ATTENDANCE_RANGES = ['Under 50', '50 - 200', '200 - 500', '500+'];
+
+const SHIFT_DURATIONS = ['4 Hours', '8 Hours', '12 Hours', 'Multi-Day'];
+
 export default function NewAIAssessmentScreen() {
   const router = useRouter();
 
   const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('Accra Central');
-  const [eventType, setEventType] = useState('VIP Escort & Event Security');
-  const [urgency, setUrgency] = useState<'routine' | 'emergency'>('routine');
+  const [location, setLocation] = useState('Labadi');
+  const [eventType, setEventType] = useState('Event & Venue Security');
+  const [attendance, setAttendance] = useState('50 - 200');
+  const [duration, setDuration] = useState('8 Hours');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleGetAssessment = async () => {
-    if (!description.trim()) return;
+    if (!description.trim()) {
+      setErrorMsg('Please describe your event or security requirements.');
+      return;
+    }
 
     setErrorMsg('');
     setLoading(true);
@@ -36,8 +53,8 @@ export default function NewAIAssessmentScreen() {
       const res = await apiClient.post<any>('/api/assess', {
         eventType,
         location,
-        attendance: 50,
-        durationHours: 4,
+        attendance: attendance === 'Under 50' ? 30 : attendance === '50 - 200' ? 120 : 350,
+        durationHours: parseInt(duration) || 8,
         concerns: description,
       });
 
@@ -46,18 +63,22 @@ export default function NewAIAssessmentScreen() {
         pathname: '/(client)/home/assessment/results' as any,
         params: { assessmentData: JSON.stringify(res) },
       });
-    } catch (e: any) {
+    } catch {
       setLoading(false);
-      // If backend offline, proceed with local payload for smooth UI testing
+      // Local mock payload for smooth UI testing
       const mockResult = {
-        id: 'ass_' + Math.random().toString(36).substring(2, 9),
+        id: 'ASS-' + Math.floor(1000 + Math.random() * 9000),
         eventType,
         location,
         aiRecommendation: {
-          threatLevel: urgency === 'emergency' ? 'CRITICAL' : 'ELEVATED',
-          indexScore: urgency === 'emergency' ? 92 : 78,
-          summary: 'Claude AI threat analysis indicates elevated crowd risk and VIP transport exposure. We recommend a specialized team for your deployment.',
-          estimatedTotal: 1440.0,
+          threatLevel: 'MODERATE THREAT',
+          indexScore: 68,
+          summary: 'Claude AI security analysis completed. Based on expected attendance of 120 guests and venue location in Labadi, we recommend a combined team of 2 Senior Close Protection Operatives and 2 Event Officers for entrance control and perimeter monitoring.',
+          teamBreakdown: [
+            { title: '2x Senior VIP Bodyguards', rate: 'GHS 120/hr' },
+            { title: '2x Event Officers', rate: 'GHS 85/hr' },
+          ],
+          estimatedTotal: 3280.0,
         },
       };
       router.push({
@@ -69,96 +90,161 @@ export default function NewAIAssessmentScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <SentriHeader title="SENTRI" showBack rightIcon={undefined} />
+      <SentriHeader title="SENTRI" showBack rightIcon="notifications" />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Header Title */}
         <View style={styles.headerSection}>
-          <SentriText variant="h1" style={styles.mainHeading}>
-            Tell us what you need.
+          <SentriText variant="monoSmall" color={Colors.gold} style={styles.stepTag}>
+            AI THREAT ASSESSMENT
           </SentriText>
-          <SentriText variant="body" color={Colors.textSecondary} style={styles.subtitle}>
-            Describe your situation, and our AI will immediately generate a tailored security assessment and deployment plan.
+          <SentriText variant="h1" style={styles.mainHeading}>
+            Security Assessment
+          </SentriText>
+          <SentriText variant="body" color={Colors.textSecondary}>
+            Describe your event or situation, and AI will generate an instant tailored security plan and team recommendation.
           </SentriText>
         </View>
 
+        {errorMsg ? (
+          <View style={styles.errorBanner}>
+            <Icon name="alert-circle" size={16} color={Colors.danger} />
+            <SentriText variant="caption" color={Colors.danger} style={styles.errorText}>
+              {errorMsg}
+            </SentriText>
+          </View>
+        ) : null}
+
+        {/* 1. Security Type Chips */}
         <TacticalCard backgroundColor={Colors.surface} style={styles.formCard}>
-          {/* Assessment Description Field */}
           <View style={styles.fieldGroup}>
             <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.fieldLabel}>
-              ASSESSMENT DESCRIPTION *
+              SERVICE TYPE *
+            </SentriText>
+            <View style={styles.chipRow}>
+              {EVENT_TYPES.map((type) => {
+                const isActive = eventType === type;
+                return (
+                  <TouchableOpacity
+                    key={type}
+                    style={[styles.typeChip, isActive && styles.typeChipActive]}
+                    onPress={() => setEventType(type)}
+                    activeOpacity={0.8}
+                  >
+                    <SentriText
+                      variant="caption"
+                      color={isActive ? Colors.gold : Colors.textSecondary}
+                      style={styles.chipText}
+                    >
+                      {type}
+                    </SentriText>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+
+          {/* 2. Location Chips */}
+          <View style={styles.fieldGroup}>
+            <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.fieldLabel}>
+              LOCATION / SECTOR *
+            </SentriText>
+            <View style={styles.chipRow}>
+              {LOCATIONS.map((loc) => {
+                const isActive = location === loc;
+                return (
+                  <TouchableOpacity
+                    key={loc}
+                    style={[styles.typeChip, isActive && styles.typeChipActive]}
+                    onPress={() => setLocation(loc)}
+                    activeOpacity={0.8}
+                  >
+                    <SentriText
+                      variant="caption"
+                      color={isActive ? Colors.gold : Colors.textSecondary}
+                      style={styles.chipText}
+                    >
+                      {loc}
+                    </SentriText>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+
+          {/* 3. Expected Attendees & Shift Duration */}
+          <View style={styles.fieldRow}>
+            <View style={styles.halfCol}>
+              <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.fieldLabel}>
+                ATTENDEES
+              </SentriText>
+              <View style={styles.chipRowVertical}>
+                {ATTENDANCE_RANGES.map((att) => {
+                  const isActive = attendance === att;
+                  return (
+                    <TouchableOpacity
+                      key={att}
+                      style={[styles.subChip, isActive && styles.subChipActive]}
+                      onPress={() => setAttendance(att)}
+                      activeOpacity={0.8}
+                    >
+                      <SentriText variant="caption" color={isActive ? Colors.gold : Colors.textSecondary}>
+                        {att}
+                      </SentriText>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+
+            <View style={styles.halfCol}>
+              <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.fieldLabel}>
+                SHIFT DURATION
+              </SentriText>
+              <View style={styles.chipRowVertical}>
+                {SHIFT_DURATIONS.map((dur) => {
+                  const isActive = duration === dur;
+                  return (
+                    <TouchableOpacity
+                      key={dur}
+                      style={[styles.subChip, isActive && styles.subChipActive]}
+                      onPress={() => setDuration(dur)}
+                      activeOpacity={0.8}
+                    >
+                      <SentriText variant="caption" color={isActive ? Colors.gold : Colors.textSecondary}>
+                        {dur}
+                      </SentriText>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          </View>
+
+          {/* 4. Situation Description Textarea */}
+          <View style={styles.fieldGroup}>
+            <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.fieldLabel}>
+              DESCRIPTION & SPECIFIC REQUESTS *
             </SentriText>
             <View style={styles.textAreaBox}>
               <TextInput
                 style={styles.textArea}
                 multiline
-                numberOfLines={6}
+                numberOfLines={5}
                 value={description}
                 onChangeText={setDescription}
-                placeholder="E.g., High-profile VIP executive requires secure transport from Kotoka Airport to downtown Accra over a 3-day event period..."
+                placeholder="E.g., Private Beach party with 150 guests. Need entry point access control, VIP escort for high-profile attendees, and perimeter surveillance..."
                 placeholderTextColor={Colors.textMuted}
               />
             </View>
           </View>
 
-          {/* Operational Urgency Selector */}
-          <View style={styles.fieldGroup}>
-            <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.fieldLabel}>
-              OPERATIONAL URGENCY
-            </SentriText>
-            <View style={styles.urgencyRow}>
-              <TouchableOpacity
-                style={[
-                  styles.urgencyBtn,
-                  urgency === 'routine' && styles.urgencyBtnRoutineActive,
-                ]}
-                onPress={() => setUrgency('routine')}
-                activeOpacity={0.8}
-              >
-                <Icon
-                  name="shield"
-                  size={16}
-                  color={urgency === 'routine' ? Colors.gold : Colors.textMuted}
-                />
-                <SentriText
-                  variant="mono"
-                  color={urgency === 'routine' ? Colors.gold : Colors.textMuted}
-                  style={styles.urgencyText}
-                >
-                  ROUTINE
-                </SentriText>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.urgencyBtn,
-                  urgency === 'emergency' && styles.urgencyBtnEmergencyActive,
-                ]}
-                onPress={() => setUrgency('emergency')}
-                activeOpacity={0.8}
-              >
-                <Icon
-                  name="alert-triangle"
-                  size={16}
-                  color={urgency === 'emergency' ? Colors.danger : Colors.textMuted}
-                />
-                <SentriText
-                  variant="mono"
-                  color={urgency === 'emergency' ? Colors.danger : Colors.textMuted}
-                  style={styles.urgencyText}
-                >
-                  EMERGENCY
-                </SentriText>
-              </TouchableOpacity>
-            </View>
-          </View>
-
           {/* Submit Action */}
           <SentriButton
-            title="Get Assessment →"
+            title="GENERATE AI SECURITY PLAN →"
             variant="primary"
             size="md"
             loading={loading}
-            disabled={!description.trim()}
             onPress={handleGetAssessment}
             style={styles.submitBtn}
           />
@@ -178,21 +264,34 @@ const styles = StyleSheet.create({
     maxWidth: 480,
     width: '100%',
     alignSelf: 'center',
+    paddingBottom: 100,
   },
   headerSection: {
     marginVertical: Spacing.md,
   },
+  stepTag: {
+    fontSize: 11,
+    letterSpacing: 1,
+    marginBottom: 4,
+  },
   mainHeading: {
     fontSize: 26,
-    marginBottom: 6,
+    marginBottom: 4,
   },
-  subtitle: {
-    fontSize: 14,
-    lineHeight: 20,
+  errorBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: Colors.dangerMuted,
+    padding: Spacing.md,
+    borderRadius: 8,
+    marginBottom: Spacing.md,
+  },
+  errorText: {
+    flex: 1,
   },
   formCard: {
     padding: Spacing.md,
-    marginTop: Spacing.xs,
   },
   fieldGroup: {
     marginBottom: Spacing.lg,
@@ -201,6 +300,50 @@ const styles = StyleSheet.create({
     fontSize: 11,
     letterSpacing: 1,
     marginBottom: 8,
+  },
+  chipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  typeChip: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: Colors.surfaceElevated,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: 6,
+  },
+  typeChipActive: {
+    borderColor: Colors.gold,
+    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+  },
+  chipText: {
+    fontSize: 12,
+  },
+  fieldRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: Spacing.lg,
+  },
+  halfCol: {
+    flex: 1,
+  },
+  chipRowVertical: {
+    gap: 6,
+  },
+  subChip: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    backgroundColor: Colors.surfaceElevated,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  subChipActive: {
+    borderColor: Colors.gold,
+    backgroundColor: 'rgba(240, 167, 59, 0.15)',
   },
   textAreaBox: {
     backgroundColor: Colors.surfaceElevated,
@@ -212,37 +355,9 @@ const styles = StyleSheet.create({
   textArea: {
     color: Colors.text,
     fontFamily: 'IBMPlexMono_400Regular',
-    fontSize: 14,
-    minHeight: 120,
+    fontSize: 13,
+    minHeight: 110,
     textAlignVertical: 'top',
-  },
-  urgencyRow: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  urgencyBtn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 12,
-    backgroundColor: Colors.surfaceElevated,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: 8,
-  },
-  urgencyBtnRoutineActive: {
-    borderColor: Colors.gold,
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
-  },
-  urgencyBtnEmergencyActive: {
-    borderColor: Colors.danger,
-    backgroundColor: Colors.dangerMuted,
-  },
-  urgencyText: {
-    fontSize: 12,
-    fontWeight: '700',
   },
   submitBtn: {
     marginTop: Spacing.xs,

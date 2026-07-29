@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Colors, Spacing } from '@/constants/theme';
 import { SentriText } from '@/components/ui/SentriText';
@@ -14,13 +14,11 @@ export default function ConfirmAndPayScreen() {
   const params = useLocalSearchParams();
   const assessmentId = (params.assessmentId as string) || 'ass_default';
 
+  const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'momo' | 'card'>('paystack');
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
 
   const handlePaystackEscrowPay = async () => {
-    setErrorMsg('');
     setLoading(true);
-
     const todayStr = new Date().toISOString().split('T')[0];
 
     try {
@@ -34,108 +32,185 @@ export default function ConfirmAndPayScreen() {
       setLoading(false);
       router.push({
         pathname: '/(client)/home/assessment/success' as any,
-        params: { jobId: res.id || 'job_1234' },
+        params: { jobId: res.id || 'JOB-7294' },
       });
-    } catch (e: any) {
+    } catch {
       setLoading(false);
-      // Fallback to success view for UI testing if backend is offline
+      // Fallback transition for demo testing
       router.push({
         pathname: '/(client)/home/assessment/success' as any,
-        params: { jobId: 'job_' + Math.random().toString(36).substring(2, 8) },
+        params: { jobId: 'JOB-' + Math.floor(1000 + Math.random() * 9000) },
       });
     }
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <SentriHeader title="SENTRI" showBack rightIcon={undefined} />
+      <SentriHeader title="SENTRI" showBack rightIcon="notifications" />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Header Title */}
         <View style={styles.headerSection}>
-          <SentriText variant="h1" align="center" style={styles.mainHeading}>
+          <SentriText variant="monoSmall" color={Colors.gold} style={styles.stepTag}>
+            BOOKING SUMMARY & CHECKOUT
+          </SentriText>
+          <SentriText variant="h1" style={styles.mainHeading}>
             Confirm & Pay
+          </SentriText>
+          <SentriText variant="body" color={Colors.textSecondary}>
+            Review your security detail specifications and authorize Paystack Escrow hold.
           </SentriText>
         </View>
 
-        {/* Job Summary Card */}
+        {/* 1. Job Summary Card */}
         <TacticalCard
           backgroundColor={Colors.surface}
-          borderColor={Colors.border}
+          borderColor={Colors.gold}
           accentColor={Colors.gold}
           style={styles.summaryCard}
         >
-          <View style={styles.summaryTop}>
-            <View style={styles.summaryTitleBox}>
-              <Icon name="shield-checkmark" size={20} color={Colors.gold} />
-              <SentriText variant="h3" style={styles.jobTitleText}>
-                Tactical Escort & Guard Team
-              </SentriText>
+          <View style={styles.summaryHeader}>
+            <View style={styles.specBadge}>
+              <Icon name="shield-checkmark" size={16} color={Colors.gold} />
+              <SentriText variant="monoSmall" color={Colors.gold}>SECURITY DETAIL SPECIFICATIONS</SentriText>
             </View>
             <View style={styles.statusPill}>
-              <SentriText variant="monoSmall" color={Colors.gold}>PENDING</SentriText>
+              <SentriText variant="caption" color={Colors.textSuccess}>READY</SentriText>
             </View>
           </View>
 
-          <View style={styles.gridRow}>
-            <View style={styles.gridCol}>
-              <SentriText variant="monoSmall" color={Colors.textSecondary}>DURATION</SentriText>
-              <View style={styles.iconVal}>
-                <Icon name="time" size={14} color={Colors.gold} />
-                <SentriText variant="body" color={Colors.text}>4 Hours</SentriText>
+          <SentriText variant="h2" style={styles.jobTitleText}>
+            Labadi Beach Event Guarding
+          </SentriText>
+
+          <View style={styles.detailGrid}>
+            <View style={styles.detailItem}>
+              <Icon name="location" size={16} color={Colors.gold} />
+              <View>
+                <SentriText variant="caption" color={Colors.textSecondary}>LOCATION</SentriText>
+                <SentriText variant="body" color={Colors.text}>Labadi Beach Resort, Accra</SentriText>
               </View>
             </View>
 
-            <View style={styles.gridCol}>
-              <SentriText variant="monoSmall" color={Colors.textSecondary}>LOCATION</SentriText>
-              <View style={styles.iconVal}>
-                <Icon name="location" size={14} color={Colors.gold} />
-                <SentriText variant="body" color={Colors.text}>Accra Central</SentriText>
+            <View style={styles.detailItem}>
+              <Icon name="time" size={16} color={Colors.gold} />
+              <View>
+                <SentriText variant="caption" color={Colors.textSecondary}>DURATION & SHIFT</SentriText>
+                <SentriText variant="body" color={Colors.text}>18:00 - 02:00 (8 Hours)</SentriText>
+              </View>
+            </View>
+
+            <View style={styles.detailItem}>
+              <Icon name="user" size={16} color={Colors.gold} />
+              <View>
+                <SentriText variant="caption" color={Colors.textSecondary}>ASSIGNED TEAM</SentriText>
+                <SentriText variant="body" color={Colors.text}>2x VIP Bodyguards + 2x Event Officers</SentriText>
               </View>
             </View>
           </View>
         </TacticalCard>
 
-        {/* Cost Breakdown Card */}
-        <TacticalCard backgroundColor={Colors.surface} style={styles.breakdownCard}>
-          <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.breakdownTitle}>
-            ESCROW COST BREAKDOWN
+        {/* 2. Select Payment Method */}
+        <View style={styles.sectionHeader}>
+          <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.sectionTitle}>
+            SELECT PAYMENT METHOD
           </SentriText>
+        </View>
 
+        <View style={styles.paymentMethodList}>
+          <TouchableOpacity
+            style={[styles.methodCard, paymentMethod === 'paystack' && styles.methodCardActive]}
+            onPress={() => setPaymentMethod('paystack')}
+            activeOpacity={0.8}
+          >
+            <View style={styles.methodLeft}>
+              <View style={styles.radioOuter}>
+                {paymentMethod === 'paystack' && <View style={styles.radioInner} />}
+              </View>
+              <Icon name="wallet" size={20} color={Colors.gold} />
+              <View>
+                <SentriText variant="h3" style={styles.methodTitle}>Paystack Checkout</SentriText>
+                <SentriText variant="caption" color={Colors.textMuted}>Debit/Credit Card • Apple Pay • Bank Transfer</SentriText>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.methodCard, paymentMethod === 'momo' && styles.methodCardActive]}
+            onPress={() => setPaymentMethod('momo')}
+            activeOpacity={0.8}
+          >
+            <View style={styles.methodLeft}>
+              <View style={styles.radioOuter}>
+                {paymentMethod === 'momo' && <View style={styles.radioInner} />}
+              </View>
+              <Icon name="card" size={20} color={Colors.gold} />
+              <View>
+                <SentriText variant="h3" style={styles.methodTitle}>Mobile Money (MoMo)</SentriText>
+                <SentriText variant="caption" color={Colors.textMuted}>MTN MoMo • Vodafone Cash • AirtelTigo</SentriText>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* 3. Price Breakdown Card */}
+        <View style={styles.sectionHeader}>
+          <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.sectionTitle}>
+            PRICE & ESCROW BREAKDOWN
+          </SentriText>
+        </View>
+
+        <TacticalCard backgroundColor={Colors.surface} style={styles.breakdownCard}>
           <View style={styles.costRow}>
-            <SentriText variant="body" color={Colors.textSecondary}>1x Senior VIP Escort (4 hrs)</SentriText>
-            <SentriText variant="mono" color={Colors.text}>GHS 480.00</SentriText>
+            <SentriText variant="body" color={Colors.textSecondary}>2x Senior VIP Escorts (8 hrs @ GHS 120/hr)</SentriText>
+            <SentriText variant="mono" color={Colors.text}>GHS 1,920.00</SentriText>
           </View>
 
           <View style={styles.costRow}>
-            <SentriText variant="body" color={Colors.textSecondary}>3x Event Guards (4 hrs)</SentriText>
-            <SentriText variant="mono" color={Colors.text}>GHS 960.00</SentriText>
+            <SentriText variant="body" color={Colors.textSecondary}>2x Event Officers (8 hrs @ GHS 85/hr)</SentriText>
+            <SentriText variant="mono" color={Colors.text}>GHS 1,360.00</SentriText>
           </View>
 
           <View style={styles.costRow}>
             <SentriText variant="body" color={Colors.textSecondary}>AI Threat Assessment Fee</SentriText>
+            <SentriText variant="mono" color={Colors.textSuccess}>INCLUDED (FREE)</SentriText>
+          </View>
+
+          <View style={styles.costRow}>
+            <SentriText variant="body" color={Colors.textSecondary}>Paystack Escrow Protection</SentriText>
             <SentriText variant="mono" color={Colors.textSuccess}>INCLUDED</SentriText>
           </View>
 
           <View style={styles.divider} />
 
           <View style={styles.totalRow}>
-            <SentriText variant="h3" color={Colors.text}>Total Escrow Amount</SentriText>
-            <SentriText variant="h2" color={Colors.gold}>GHS 1,440.00</SentriText>
+            <View>
+              <SentriText variant="h2" color={Colors.text}>Total Escrow Hold</SentriText>
+              <SentriText variant="caption" color={Colors.textMuted}>Charged via Paystack Escrow</SentriText>
+            </View>
+            <SentriText variant="h1" color={Colors.gold} style={styles.totalAmount}>
+              GHS 3,280.00
+            </SentriText>
           </View>
         </TacticalCard>
 
-        {/* Escrow Guarantee Notice */}
-        <View style={styles.escrowNotice}>
-          <Icon name="lock-closed" size={18} color={Colors.gold} />
-          <SentriText variant="caption" color={Colors.textSecondary} style={styles.noticeText}>
-            <SentriText variant="caption" color={Colors.gold}>Paystack Escrow Protection:</SentriText> Funds are held securely in escrow and only released to guards after you confirm completed hours.
-          </SentriText>
-        </View>
+        {/* 4. Paystack Protection Guarantee Banner */}
+        <TacticalCard backgroundColor={Colors.surface} style={styles.escrowNoticeCard}>
+          <View style={styles.escrowNoticeRow}>
+            <Icon name="lock" size={24} color={Colors.gold} />
+            <View style={styles.noticeTextGroup}>
+              <SentriText variant="h3" color={Colors.gold}>100% Paystack Escrow Guarantee</SentriText>
+              <SentriText variant="caption" color={Colors.textSecondary} style={styles.noticeDesc}>
+                Funds are held safely in escrow and are only released to operatives after shift completion and your explicit confirmation.
+              </SentriText>
+            </View>
+          </View>
+        </TacticalCard>
 
-        {/* Payment Action */}
+        {/* 5. Checkout Action Button */}
         <View style={styles.actionSection}>
           <SentriButton
-            title="Pay GHS 1,440 with Paystack →"
+            title="AUTHORIZE GHS 3,280.00 HOLD →"
             variant="primary"
             size="md"
             loading={loading}
@@ -162,58 +237,101 @@ const styles = StyleSheet.create({
   headerSection: {
     marginVertical: Spacing.md,
   },
+  stepTag: {
+    fontSize: 11,
+    letterSpacing: 1,
+    marginBottom: 4,
+  },
   mainHeading: {
-    fontSize: 24,
+    fontSize: 26,
+    marginBottom: 4,
   },
   summaryCard: {
-    marginBottom: Spacing.md,
     padding: Spacing.md,
+    marginBottom: Spacing.lg,
   },
-  summaryTop: {
+  summaryHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-    paddingBottom: 12,
+    marginBottom: Spacing.xs,
   },
-  summaryTitleBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  jobTitleText: {
-    fontSize: 16,
-  },
-  statusPill: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: Colors.gold,
-    backgroundColor: 'rgba(240, 167, 59, 0.12)',
-  },
-  gridRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  gridCol: {
-    gap: 4,
-  },
-  iconVal: {
+  specBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
   },
-  breakdownCard: {
+  statusPill: {
+    backgroundColor: 'rgba(56, 176, 0, 0.1)',
+    borderWidth: 1,
+    borderColor: Colors.textSuccess,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  jobTitleText: {
+    fontSize: 20,
     marginBottom: Spacing.md,
+  },
+  detailGrid: {
+    gap: 12,
+    paddingTop: Spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+  },
+  detailItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  sectionHeader: {
+    marginBottom: Spacing.xs,
+  },
+  sectionTitle: {
+    fontSize: 11,
+    letterSpacing: 1,
+  },
+  paymentMethodList: {
+    gap: 10,
+    marginBottom: Spacing.lg,
+  },
+  methodCard: {
+    backgroundColor: Colors.surface,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: 8,
     padding: Spacing.md,
   },
-  breakdownTitle: {
-    fontSize: 11,
-    letterSpacing: 1.5,
-    marginBottom: Spacing.sm,
+  methodCardActive: {
+    borderColor: Colors.gold,
+    backgroundColor: Colors.surfaceElevated,
+  },
+  methodLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  radioOuter: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: Colors.gold,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: Colors.gold,
+  },
+  methodTitle: {
+    fontSize: 15,
+  },
+  breakdownCard: {
+    padding: Spacing.md,
+    marginBottom: Spacing.lg,
   },
   costRow: {
     flexDirection: 'row',
@@ -231,23 +349,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  escrowNotice: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    backgroundColor: Colors.surface,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: 8,
+  totalAmount: {
+    fontSize: 24,
+  },
+  escrowNoticeCard: {
     padding: Spacing.md,
     marginBottom: Spacing.lg,
   },
-  noticeText: {
+  escrowNoticeRow: {
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'flex-start',
+  },
+  noticeTextGroup: {
     flex: 1,
+    gap: 4,
+  },
+  noticeDesc: {
     fontSize: 12,
     lineHeight: 18,
   },
   actionSection: {
-    alignItems: 'center',
+    marginTop: Spacing.xs,
   },
 });

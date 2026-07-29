@@ -3,7 +3,6 @@ import { View, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Animated 
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Colors, Spacing } from '@/constants/theme';
 import { SentriText } from '@/components/ui/SentriText';
-import { SentriButton } from '@/components/ui/SentriButton';
 import { SentriHeader } from '@/components/ui/SentriHeader';
 import { TacticalCard } from '@/components/ui/TacticalCard';
 import { Icon } from '@/components/ui/Icon';
@@ -43,14 +42,13 @@ export default function ClientActiveJobScreen() {
         const bRes = await apiClient.get<any>(`/api/bookings/${bookingId}`);
         if (bRes) setBooking(bRes);
       } catch {
-        // Fallback for mock view
+        // Fallback
       }
 
       try {
         const iRes = await apiClient.get<any[]>(`/api/incidents/booking/${bookingId}`);
         if (iRes && Array.isArray(iRes)) setIncidents(iRes);
       } catch {
-        // Fallback mock incidents
         setIncidents([
           {
             id: 'inc_1',
@@ -65,13 +63,6 @@ export default function ClientActiveJobScreen() {
             incidentType: 'UPDATE',
             description: 'Perimeter check completed. All clearance checks normal.',
             loggedAt: '10:42 PM',
-          },
-          {
-            id: 'inc_3',
-            severity: 'Low',
-            incidentType: 'SYSTEM',
-            description: 'Geofence sector locked. Periodic checkin verified.',
-            loggedAt: '10:15 PM',
           },
         ]);
       } finally {
@@ -89,18 +80,21 @@ export default function ClientActiveJobScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Header & Live Status Pill */}
         <View style={styles.headerSection}>
+          <SentriText variant="monoSmall" color={Colors.gold} style={styles.stepTag}>
+            LIVE GEOFENCE MONITORING
+          </SentriText>
           <SentriText variant="h1" style={styles.heading}>
             Active Deployment
           </SentriText>
           <View style={styles.liveStatusRow}>
             <Animated.View style={[styles.pulseDot, { opacity: pulseAnim }]} />
             <SentriText variant="monoSmall" color={Colors.danger} style={styles.liveText}>
-              STATUS: LIVE MONITORING
+              LIVE RADAR & GUARD TRACKING ACTIVE
             </SentriText>
           </View>
         </View>
 
-        {/* Hero Satellite Sector Card */}
+        {/* Hero Sector Details Card */}
         <TacticalCard
           backgroundColor={Colors.surface}
           borderColor={Colors.border}
@@ -108,32 +102,111 @@ export default function ClientActiveJobScreen() {
           style={styles.mapCard}
         >
           <View style={styles.mapHeaderRow}>
-            <Icon name="location" size={18} color={Colors.gold} />
+            <Icon name="location" size={20} color={Colors.gold} />
             <View style={styles.mapHeaderText}>
-              <SentriText variant="monoSmall" color={Colors.gold}>SECTOR ALPHA // GEOFENCED</SentriText>
-              <SentriText variant="monoSmall" color={Colors.textSecondary}>
-                COORDS: 5.6037° N, 0.1870° W
+              <SentriText variant="h3" color={Colors.text}>
+                {booking?.title || 'Labadi Beach Event Guarding'}
+              </SentriText>
+              <SentriText variant="caption" color={Colors.textSecondary}>
+                {booking?.location || 'Labadi Beach Resort, Accra'} • 4 Guards Active
               </SentriText>
             </View>
           </View>
 
           <View style={styles.jobDetailGrid}>
             <View style={styles.detailCol}>
-              <SentriText variant="caption" color={Colors.textSecondary}>LOCATION</SentriText>
-              <SentriText variant="body" color={Colors.text}>
-                {booking?.location || 'Labadi Beach Resort, Accra'}
+              <SentriText variant="caption" color={Colors.textSecondary}>GPS STATUS</SentriText>
+              <SentriText variant="caption" color={Colors.textSuccess} style={styles.boldText}>
+                GEOFENCE VERIFIED ✓
               </SentriText>
             </View>
             <View style={styles.detailCol}>
-              <SentriText variant="caption" color={Colors.textSecondary}>STATUS</SentriText>
-              <SentriText variant="mono" color={Colors.textSuccess}>
-                {(booking?.status || 'ACTIVE').toUpperCase()}
+              <SentriText variant="caption" color={Colors.textSecondary}>SHIFT TIMINGS</SentriText>
+              <SentriText variant="body" color={Colors.text}>
+                18:00 - 02:00 (8 Hours)
               </SentriText>
             </View>
           </View>
         </TacticalCard>
 
-        {/* Incident Feed Section */}
+        {/* HIGH-VISIBILITY INSTANT ACTION TILES (2x2 Grid) */}
+        <View style={styles.sectionHeader}>
+          <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.sectionTitle}>
+            CRITICAL DEPLOYMENT ACTIONS
+          </SentriText>
+        </View>
+
+        <View style={styles.actionGrid}>
+          {/* Tile 1: Emergency Support Call (RED) */}
+          <TouchableOpacity
+            style={[styles.tileCard, styles.emergencyTile]}
+            onPress={() => router.push('/shared/call' as any)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.tileIconCircleRed}>
+              <Icon name="call" size={22} color={Colors.danger} />
+            </View>
+            <SentriText variant="h3" color={Colors.danger} style={styles.tileTitle}>
+              Emergency Call
+            </SentriText>
+            <SentriText variant="caption" color={Colors.textMuted} style={styles.tileSub}>
+              24/7 Direct Line
+            </SentriText>
+          </TouchableOpacity>
+
+          {/* Tile 2: Call Guards (GOLD) */}
+          <TouchableOpacity
+            style={[styles.tileCard, styles.goldTile]}
+            onPress={() => router.push('/shared/call' as any)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.tileIconCircleGold}>
+              <Icon name="shield-checkmark" size={22} color={Colors.gold} />
+            </View>
+            <SentriText variant="h3" color={Colors.gold} style={styles.tileTitle}>
+              Call Guards
+            </SentriText>
+            <SentriText variant="caption" color={Colors.textMuted} style={styles.tileSub}>
+              Assigned Team
+            </SentriText>
+          </TouchableOpacity>
+
+          {/* Tile 3: AI Post-Job Report (DARK SURFACE) */}
+          <TouchableOpacity
+            style={[styles.tileCard, styles.surfaceTile]}
+            onPress={() => router.push('/shared/report/33333333-3333-3333-3333-333333333332' as any)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.tileIconCircleBlue}>
+              <Icon name="shield" size={22} color={Colors.text} />
+            </View>
+            <SentriText variant="h3" color={Colors.text} style={styles.tileTitle}>
+              AI Report
+            </SentriText>
+            <SentriText variant="caption" color={Colors.textMuted} style={styles.tileSub}>
+              PDF Summary
+            </SentriText>
+          </TouchableOpacity>
+
+          {/* Tile 4: Geofence Live Radar (GREEN) */}
+          <TouchableOpacity
+            style={[styles.tileCard, styles.greenTile]}
+            onPress={() => router.push('/(client)/activity' as any)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.tileIconCircleGreen}>
+              <Icon name="location" size={22} color={Colors.textSuccess} />
+            </View>
+            <SentriText variant="h3" color={Colors.textSuccess} style={styles.tileTitle}>
+              Live Radar
+            </SentriText>
+            <SentriText variant="caption" color={Colors.textMuted} style={styles.tileSub}>
+              GPS Coordinates
+            </SentriText>
+          </TouchableOpacity>
+        </View>
+
+        {/* Incident & Activity Feed */}
         <View style={styles.sectionHeader}>
           <SentriText variant="monoSmall" color={Colors.textSecondary} style={styles.sectionTitle}>
             INCIDENT & ACTIVITY FEED
@@ -159,7 +232,7 @@ export default function ClientActiveJobScreen() {
           ]).map((item) => {
             const isHigh = item.severity === 'High';
             const statusColor = isHigh ? Colors.danger : item.incidentType === 'UPDATE' ? Colors.gold : Colors.textMuted;
-            const iconName = isHigh ? 'alert-triangle' : item.incidentType === 'UPDATE' ? 'shield-checkmark' : 'lock';
+            const iconName = isHigh ? 'alert-circle' : item.incidentType === 'UPDATE' ? 'shield-checkmark' : 'lock';
 
             return (
               <TacticalCard
@@ -189,16 +262,6 @@ export default function ClientActiveJobScreen() {
             );
           })}
         </View>
-
-        {/* Emergency Action */}
-        <View style={styles.actionSection}>
-          <SentriButton
-            title="EMERGENCY SUPPORT"
-            variant="danger"
-            size="md"
-            onPress={() => router.push('/shared/call' as any)}
-          />
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -218,6 +281,11 @@ const styles = StyleSheet.create({
   },
   headerSection: {
     marginVertical: Spacing.md,
+  },
+  stepTag: {
+    fontSize: 11,
+    letterSpacing: 1,
+    marginBottom: 4,
   },
   heading: {
     fontSize: 26,
@@ -245,11 +313,12 @@ const styles = StyleSheet.create({
   mapHeaderRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 12,
     marginBottom: Spacing.md,
   },
   mapHeaderText: {
     flex: 1,
+    gap: 2,
   },
   jobDetailGrid: {
     flexDirection: 'row',
@@ -259,14 +328,88 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.border,
   },
   detailCol: {
-    gap: 4,
+    gap: 2,
+  },
+  boldText: {
+    fontWeight: '700',
   },
   sectionHeader: {
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   sectionTitle: {
     fontSize: 11,
     letterSpacing: 1,
+  },
+  actionGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: Spacing.lg,
+  },
+  tileCard: {
+    width: '48%',
+    padding: Spacing.md,
+    borderRadius: 10,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+  },
+  emergencyTile: {
+    backgroundColor: 'rgba(230, 57, 70, 0.08)',
+    borderColor: Colors.danger,
+  },
+  goldTile: {
+    backgroundColor: 'rgba(240, 167, 59, 0.08)',
+    borderColor: Colors.gold,
+  },
+  surfaceTile: {
+    backgroundColor: Colors.surface,
+    borderColor: Colors.border,
+  },
+  greenTile: {
+    backgroundColor: 'rgba(56, 176, 0, 0.08)',
+    borderColor: Colors.textSuccess,
+  },
+  tileIconCircleRed: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(230, 57, 70, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tileIconCircleGold: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tileIconCircleBlue: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.surfaceElevated,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tileIconCircleGreen: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(56, 176, 0, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tileTitle: {
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  tileSub: {
+    fontSize: 10,
+    textAlign: 'center',
   },
   feedList: {
     gap: 12,
@@ -298,8 +441,5 @@ const styles = StyleSheet.create({
   feedDesc: {
     fontSize: 14,
     lineHeight: 20,
-  },
-  actionSection: {
-    marginTop: Spacing.md,
   },
 });
