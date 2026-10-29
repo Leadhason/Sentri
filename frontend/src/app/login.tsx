@@ -35,6 +35,7 @@ export default function LoginScreen() {
     setLoading(true);
 
     try {
+      console.log('[LoginScreen] Authenticating:', email, 'role:', selectedRole);
       await login(email, password, selectedRole);
       setLoading(false);
 
@@ -43,9 +44,10 @@ export default function LoginScreen() {
       } else {
         router.replace('/(client)/home' as any);
       }
-    } catch (e) {
+    } catch (e: any) {
+      console.error('[LoginScreen] Login error:', e);
       setLoading(false);
-      setErrorMsg('Invalid authentication credentials.');
+      setErrorMsg(e?.message || 'Invalid authentication credentials.');
     }
   };
 

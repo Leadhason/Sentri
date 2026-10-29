@@ -38,12 +38,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const phone: string = sessionUser.user_metadata?.phone || '';
 
     try {
+      console.log('[AuthContext] Syncing real user with backend at /api/auth/sync:', fullName, role);
       const syncResult = await apiClient.post<any>('/api/auth/sync', {
         fullName,
         phone,
         role,
       });
-
+      console.log('[AuthContext] Backend sync successful:', syncResult);
       return {
         id: syncResult.id || sessionUser.id,
         email: syncResult.email || sessionUser.email,
@@ -52,7 +53,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         role: (syncResult.role as UserRole) || role,
         token: sessionToken,
       };
-    } catch {
+    } catch (syncErr: any) {
+      console.error('[AuthContext] Backend sync warning/error:', syncErr?.message || syncErr);
       return {
         id: sessionUser.id,
         email: sessionUser.email || '',
@@ -97,47 +99,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string, targetRole?: UserRole) => {
     setIsLoading(true);
     try {
-      let data: any = null;
-      let error: any = null;
+      console.log('[AuthContext] Authenticating real user with Supabase:', email);
+      const res = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-      try {
-        const res = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        data = res.data;
-        error = res.error;
-      } catch (err: any) {
-        error = err;
+      if (res.error) {
+        console.error('[AuthContext] Supabase signIn error:', res.error);
+        throw res.error;
       }
 
-      if (error) {
-        const msg = String(error.message || error);
-        if (
-          msg.includes('FetchError') ||
-          msg.includes('Failed to fetch') ||
-          msg.includes('Invalid URL') ||
-          msg.includes('sentri-mock') ||
-          msg.includes('CORS') ||
-          msg.includes('your-project')
-        ) {
-          const mockUserSession: UserSession = {
-            id: 'usr_' + Math.random().toString(36).substring(2, 9),
-            email,
-            fullName: email.split('@')[0],
-            role: targetRole || 'client',
-            token: 'jwt_mock_token_12345',
-          };
-          setUser(mockUserSession);
-          setRoleState(mockUserSession.role);
-          setIsLoading(false);
-          return;
-        }
-        throw error;
-      }
-
-      if (data?.session?.user) {
-        const userSession = await fetchBackendUser(data.session.user, data.session.access_token);
+      if (res.data?.session?.user) {
+        console.log('[AuthContext] Supabase authentication successful. User ID:', res.data.session.user.id);
+        const userSession = await fetchBackendUser(res.data.session.user, res.data.session.access_token);
         if (targetRole && userSession.role !== targetRole) {
           userSession.role = targetRole;
         }
@@ -158,55 +133,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   ) => {
     setIsLoading(true);
     try {
-      let data: any = null;
-      let error: any = null;
-
-      try {
-        const res = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              full_name: fullName,
-              phone,
-              role: targetRole,
-            },
-          },
-        });
-        data = res.data;
-        error = res.error;
-      } catch (err: any) {
-        error = err;
-      }
-
-      if (error) {
-        const msg = String(error.message || error);
-        if (
-          msg.includes('FetchError') ||
-          msg.includes('Failed to fetch') ||
-          msg.includes('Invalid URL') ||
-          msg.includes('sentri-mock') ||
-          msg.includes('CORS') ||
-          msg.includes('your-project')
-        ) {
-          const mockUserSession: UserSession = {
-            id: 'usr_' + Math.random().toString(36).substring(2, 9),
-            email,
-            fullName,
+      console.log('[AuthContext] Registering real user with Supabase:', email, fullName);
+      const res = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
             phone,
             role: targetRole,
-            token: 'jwt_mock_token_12345',
-          };
-          setUser(mockUserSession);
-          setRoleState(targetRole);
-          setIsLoading(false);
-          return;
-        }
-        throw error;
+          },
+        },
+      });
+
+      if (res.error) {
+        console.error('[AuthContext] Supabase signUp error:', res.error);
+        throw res.error;
       }
 
-      if (data?.user) {
-        const userSession = await fetchBackendUser(data.user, data.session?.access_token);
+      if (res.data?.user) {
+        console.log('[AuthContext] Supabase registration successful. User ID:', res.data.user.id);
+        const userSession = await fetchBackendUser(res.data.user, res.data.session?.access_token);
         setUser(userSession);
         setRoleState(targetRole);
       }

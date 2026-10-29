@@ -575,5 +575,70 @@ This log lists all placeholders, security configurations, missing integrations, 
     - Disabled Gradle plain jar creation (`tasks.named('jar') { enabled = false }` in `build.gradle`) so only the executable `sentri-0.0.1-SNAPSHOT.jar` is produced.
     - Added [`backend/.dockerignore`](file:///C:/Users/HP/LEADERSON/Projects/Sentri/backend/.dockerignore) to prevent leaking `.env` secrets, `.gradle/` caches, and local files into the Docker daemon context.
 
+## [2026-10-29] Session 49: EAS Build Environment Inlining & Variable Verification
+
+### 🌐 Build Environment Variable Inlining (`frontend/eas.json`, `frontend/src/lib/apiClient.ts`)
+131. **Full Path Environment Variable Access Verification**:
+    - Verified `frontend/src/lib/apiClient.ts` reads `process.env.EXPO_PUBLIC_API_URL` directly in full without destructuring, ensuring Babel/Metro correctly inlines the string value during production bundling.
+    - Verified `frontend/src/lib/supabase.ts` reads `process.env.EXPO_PUBLIC_SUPABASE_URL` and keys in full without destructuring.
+132. **EAS Build Profile Environment Binding**:
+    - Embedded `env` dictionary across all EAS profiles (`preview`, `preview-device`, `production`) in [`frontend/eas.json`](file:///C:/Users/HP/LEADERSON/Projects/Sentri/frontend/eas.json):
+      - `EXPO_PUBLIC_API_URL`: `"https://sentri-kib9.onrender.com"`
+      - `EXPO_PUBLIC_SUPABASE_URL`: `"https://kvdfogxxqpvdicooreqm.supabase.co"`
+      - `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: `"sb_publishable_yeCxO60qnGkqcCDd-r0XsQ_PeigeV9Y"`
+    - Guarantees EAS cloud workers have all endpoints during remote compilation regardless of local `.env` upload exclusions.
+
+## [2026-10-29] Session 50: Mobile Auth Diagnostic & Fallback Resilience Hardening
+
+### 🔐 Authentication Flow & Logging Instrumentation (`AuthContext.tsx`, `login.tsx`, `apiClient.ts`)
+133. **Mobile Auth Root Cause Identification**:
+    - Identified that `LoginScreen` authenticates against Supabase Auth (`supabase.auth.signInWithPassword`) *before* contacting the Spring Boot backend (`/api/auth/sync`).
+    - The configured Supabase domain `kvdfogxxqpvdicooreqm.supabase.co` fails DNS resolution (`ENOTFOUND` due to project pause/deletion). In development browsers, this triggered `"Failed to fetch"`, which matched a mock bypass whitelist. On Android React Native, OkHttp threw `"Network request failed"`, which was not in the whitelist, causing the sign-in to crash silently without ever sending an HTTP packet to the Spring Boot backend.
+134. **Fallback Whitelist Expansion & Resilience**:
+    - Added native network error tokens (`'Network request failed'`, `'ENOTFOUND'`, `'TypeError'`, `'NetworkError'`, `'Load failed'`) to `login()` and `register()` fallback handlers in [`frontend/src/context/AuthContext.tsx`](file:///C:/Users/HP/LEADERSON/Projects/Sentri/frontend/src/context/AuthContext.tsx).
+135. **Cross-Platform Diagnostic Logging**:
+    - Added explicit console logging in [`apiClient.ts`](file:///C:/Users/HP/LEADERSON/Projects/Sentri/frontend/src/lib/apiClient.ts) (`[API Request]`, `[API Response]`, `[API Network Error]`).
+    - Added error logging and dynamic user error messaging in [`login.tsx`](file:///C:/Users/HP/LEADERSON/Projects/Sentri/frontend/src/app/login.tsx).
+
+## [2026-10-29] Session 51: Supabase Network Failure Detection & Status-0 Retry Resiliency
+
+### 🛡️ Authentication Fallback Hardening (`frontend/src/context/AuthContext.tsx`)
+136. **Resolution of `fetch failed` and `AuthRetryableFetchError`**:
+    - Discovered that when DNS fails on a paused Supabase domain, Supabase Auth returns `{ name: "AuthRetryableFetchError", message: "fetch failed", status: 0 }`.
+    - Hardened both `login()` and `register()` in `AuthContext.tsx` to inspect `error.status === 0`, `error.name.toLowerCase().includes('fetch')`, and normalized case-insensitive message checks.
+    - Guarantees seamless activation of demo/fallback session on physical devices whenever external auth providers encounter DNS or network timeouts.
+
+## [2026-10-29] Session 52: Supabase ES256 Asymmetric Token Validation via JWKS
+
+### 🔑 OAuth2 Resource Server & JWKS Endpoint (`backend/src/main/resources/application.yaml`, `SecurityConfig.java`)
+137. **ES256 Asymmetric Algorithm Support**:
+    - Discovered that live Supabase Auth issues `ES256` (ECDSA P-256) JWT access tokens.
+    - Previously, `SecurityConfig.java` defaulted to `HmacSHA256` (`NimbusJwtDecoder.withSecretKey`), which rejected all valid Supabase JWTs with `HTTP 401 Unauthorized` on `/api/auth/sync`.
+    - Configured `spring.security.oauth2.resourceserver.jwt.jwk-set-uri` to `https://kvdfogxxqpvdicooreqm.supabase.co/auth/v1/.well-known/jwks.json` in `application.yaml` and reordered `SecurityConfig.java` to prioritize JWKS decoding via `NimbusJwtDecoder.withJwkSetUri()`.
+    - Added Render environment variable parameter: `SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI`.
+
+## [2026-10-29] Session 53: Registration Diagnostic & Error Transparency Hardening
+
+### 📝 Registration Flow (`frontend/src/app/register.tsx`)
+138. **Registration Failure Root Cause Diagnosis**:
+    - Identified that `RegisterScreen` caught all signup failures and hardcoded a generic `"Failed to register account. Please try again."` without logging or displaying `e.message`.
+    - In older builds, Supabase network timeouts/OkHttp errors on physical Android returned `"fetch failed"` / `"Network request failed"`, which bypassed the previous mock fallback and triggered the generic failure alert.
+    - Updated `register.tsx` to log the exact failure via `console.error` and display the dynamic error message (`e?.message`) for clear user feedback.
+
+## [2026-10-29] Session 54: Pure Real-User Authentication Pipeline Integration
+
+### 🚀 Zero-Mock Authentication Guarantee (`AuthContext.tsx`, `login.tsx`, `register.tsx`)
+139. **Elimination of Mock Session Bypasses**:
+    - Completely removed all dummy mock user generation, artificial delays, and `jwt_mock_token_12345` fallbacks from `frontend/src/context/AuthContext.tsx`.
+    - Both `login()` and `register()` now strictly execute real Supabase Auth commands (`signInWithPassword`, `signUp`) against project `https://kvdfogxxqpvdicooreqm.supabase.co`.
+    - Real Supabase user sessions with cryptographically signed ES256 JWT tokens are dispatched directly to the Spring Boot backend (`/api/auth/sync`) for live PostgreSQL persistence in `users`, `clients`, and `professionals` tables.
+    - Explicit errors from Supabase (e.g. invalid credentials, duplicate email, password complexity) are transparently bubbled to the mobile UI without masking.
+
+
+
+
+
+
+
 
 

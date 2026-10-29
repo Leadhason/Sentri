@@ -60,8 +60,9 @@ export default function RegisterScreen() {
         router.replace('/(client)/home' as any);
       }
     } catch (e: any) {
+      console.error('[RegisterScreen] Registration failed with error:', e);
       setLoading(false);
-      setErrorMsg('Failed to register account. Please try again.');
+      setErrorMsg(e?.message || 'Failed to register account. Please try again.');
     }
   };
 

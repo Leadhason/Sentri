@@ -35,11 +35,11 @@ import java.util.Map;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri:${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI:https://kvdfogxxqpvdicooreqm.supabase.co/auth/v1/.well-known/jwks.json}}")
+    private String jwkSetUri;
+
     @Value("${supabase.jwt.secret:${SUPABASE_JWT_SECRET:}}")
     private String jwtSecret;
-
-    @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri:}")
-    private String jwkSetUri;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -79,11 +79,11 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        if (jwtSecret != null && !jwtSecret.isBlank()) {
+        if (jwkSetUri != null && !jwkSetUri.isBlank()) {
+            return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+        } else if (jwtSecret != null && !jwtSecret.isBlank()) {
             SecretKeySpec keySpec = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
             return NimbusJwtDecoder.withSecretKey(keySpec).build();
-        } else if (jwkSetUri != null && !jwkSetUri.isBlank()) {
-            return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
         } else {
             // Fallback for development mode when environment secrets are omitted
             String defaultDevSecret = "sentri_super_secret_development_jwt_key_32_bytes_long!";

@@ -27,10 +27,18 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  console.log(`[API Request] ${options.method || 'GET'} ${BASE_URL}${endpoint}`);
+  let response: Response;
+  try {
+    response = await fetch(`${BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
+    console.log(`[API Response] ${response.status} ${BASE_URL}${endpoint}`);
+  } catch (netErr: any) {
+    console.error(`[API Network Error] ${options.method || 'GET'} ${BASE_URL}${endpoint}:`, netErr?.message || netErr);
+    throw netErr;
+  }
 
   if (!response.ok) {
     let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
