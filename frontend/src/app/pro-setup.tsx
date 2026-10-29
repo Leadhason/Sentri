@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.border,
   },
   activeChip: {
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    backgroundColor: Colors.badgeBg,
     borderColor: Colors.gold,
   },
   chipText: {
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   },
   presetBtnActive: {
     borderColor: Colors.gold,
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    backgroundColor: Colors.badgeBg,
   },
   textAreaBox: {
     backgroundColor: Colors.surface,

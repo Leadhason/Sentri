@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.danger,
   },
   goldTile: {
-    backgroundColor: 'rgba(240, 167, 59, 0.08)',
+    backgroundColor: Colors.badgeBg,
     borderColor: Colors.gold,
   },
   surfaceTile: {
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.border,
   },
   greenTile: {
-    backgroundColor: 'rgba(56, 176, 0, 0.08)',
+    backgroundColor: Colors.badgeBg,
     borderColor: Colors.textSuccess,
   },
   tileIconCircleRed: {
@@ -416,7 +416,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    backgroundColor: Colors.badgeBg,
     alignItems: 'center',
     justifyContent: 'center',
   },

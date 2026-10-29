@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   },
   typeChipActive: {
     borderColor: Colors.gold,
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    backgroundColor: Colors.badgeBg,
   },
   chipText: {
     fontSize: 12,
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   uploadBoxDone: {
     borderColor: Colors.textSuccess,
     borderStyle: 'solid',
-    backgroundColor: 'rgba(56, 176, 0, 0.1)',
+    backgroundColor: Colors.badgeBg,
   },
   submitBtn: {
     marginTop: Spacing.xs,

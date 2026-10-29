@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   statusPill: {
-    backgroundColor: 'rgba(56, 176, 0, 0.1)',
+    backgroundColor: Colors.badgeBg,
     borderWidth: 1,
     borderColor: Colors.textSuccess,
     paddingHorizontal: 8,

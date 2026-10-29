@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   activeIconBox: {
     borderColor: Colors.gold,
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    backgroundColor: Colors.badgeBg,
   },
   cardTitleBox: {
     flex: 1,

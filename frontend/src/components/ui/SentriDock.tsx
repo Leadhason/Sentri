@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, Shadows } from '@/constants/theme';
 import { SentriText } from './SentriText';
 import { Icon, IconName } from './Icon';
 
@@ -19,11 +19,17 @@ interface SentriDockProps {
 export const SentriDock: React.FC<SentriDockProps> = ({ tabs }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const isWeb = Platform.OS === 'web';
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.dockContainer}>
-        <View style={styles.dockCapsule}>
+        <View
+          style={[
+            styles.dockCapsule,
+            isWeb ? ({ backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' } as any) : {},
+          ]}
+        >
           {tabs.map((tab) => {
             const isActive = pathname.startsWith(tab.route);
             return (
@@ -36,13 +42,13 @@ export const SentriDock: React.FC<SentriDockProps> = ({ tabs }) => {
                 <Icon
                   name={tab.icon}
                   size={20}
-                  color={isActive ? Colors.gold : Colors.textMuted}
+                  color={isActive ? Colors.primary : Colors.textMuted}
                 />
                 <SentriText
                   variant="monoSmall"
                   style={[
                     styles.tabLabel,
-                    { color: isActive ? Colors.gold : Colors.textMuted },
+                    { color: isActive ? Colors.primaryDark : Colors.textMuted },
                   ]}
                 >
                   {tab.label}
@@ -64,6 +70,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: 'center',
+    pointerEvents: 'box-none',
   },
   dockContainer: {
     width: '92%',
@@ -73,32 +80,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    backgroundColor: '#171C25',
-    borderColor: '#30353E',
-    borderWidth: 1.5,
-    borderRadius: 30,
+    backgroundColor: 'rgba(255, 255, 255, 0.92)',
+    borderColor: 'rgba(226, 232, 240, 0.9)',
+    borderWidth: 1,
+    borderRadius: 36,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 10,
+    ...Shadows.dock,
   },
   tabBtn: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 6,
     paddingHorizontal: 14,
-    borderRadius: 20,
+    borderRadius: 22,
   },
   activeTabBtn: {
-    backgroundColor: 'rgba(240, 167, 59, 0.12)',
+    backgroundColor: 'rgba(22, 163, 74, 0.12)',
   },
   tabLabel: {
     fontSize: 10,
     marginTop: 2,
     fontWeight: '600',
-    textTransform: 'uppercase',
   },
 });

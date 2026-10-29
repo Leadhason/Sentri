@@ -16,21 +16,26 @@ export type IconName =
   | 'phone'
   | 'call'
   | 'mic'
+  | 'mic-off'
   | 'camera'
   | 'document'
   | 'alert-circle'
   | 'close'
   | 'checkmark'
+  | 'checkmark-circle'
   | 'chevron-forward'
   | 'options'
   | 'star'
+  | 'lock'
   | 'lock-closed'
+  | 'card'
   | 'wallet'
   | 'map'
   | 'eye'
   | 'radio'
   | 'swap'
   | 'upload'
+  | 'cloud-upload'
   | 'download'
   | 'share'
   | 'home'
@@ -41,7 +46,11 @@ export type IconName =
   | 'alert-triangle'
   | 'award'
   | 'refresh'
-  | 'log-out';
+  | 'log-out'
+  | 'information-circle'
+  | 'volume-high'
+  | 'volume-medium'
+  | 'call-end';
 
 interface IconProps {
   name: IconName;
@@ -81,8 +90,16 @@ export const Icon: React.FC<IconProps> = ({
     case 'phone':
     case 'call':
       return <Ionicons name="call-outline" size={size} color={color} style={style} />;
+    case 'call-end':
+      return <Ionicons name="call" size={size} color={color} style={style} />;
     case 'mic':
       return <Ionicons name="mic-outline" size={size} color={color} style={style} />;
+    case 'mic-off':
+      return <Ionicons name="mic-off-outline" size={size} color={color} style={style} />;
+    case 'volume-high':
+      return <Ionicons name="volume-high-outline" size={size} color={color} style={style} />;
+    case 'volume-medium':
+      return <Ionicons name="volume-medium-outline" size={size} color={color} style={style} />;
     case 'camera':
       return <Ionicons name="camera-outline" size={size} color={color} style={style} />;
     case 'document':
@@ -91,20 +108,26 @@ export const Icon: React.FC<IconProps> = ({
       return <Ionicons name="alert-circle-outline" size={size} color={color} style={style} />;
     case 'alert-triangle':
       return <Ionicons name="warning-outline" size={size} color={color} style={style} />;
+    case 'information-circle':
+      return <Ionicons name="information-circle-outline" size={size} color={color} style={style} />;
     case 'close':
       return <Ionicons name="close" size={size} color={color} style={style} />;
     case 'checkmark':
       return <Ionicons name="checkmark-sharp" size={size} color={color} style={style} />;
+    case 'checkmark-circle':
+      return <Ionicons name="checkmark-circle-outline" size={size} color={color} style={style} />;
     case 'chevron-forward':
       return <Ionicons name="chevron-forward" size={size} color={color} style={style} />;
     case 'options':
       return <Ionicons name="ellipsis-vertical" size={size} color={color} style={style} />;
     case 'star':
       return <Ionicons name="star" size={size} color={color} style={style} />;
+    case 'lock':
     case 'lock-closed':
       return <Ionicons name="lock-closed-outline" size={size} color={color} style={style} />;
+    case 'card':
     case 'wallet':
-      return <Ionicons name="wallet-outline" size={size} color={color} style={style} />;
+      return <Ionicons name="card-outline" size={size} color={color} style={style} />;
     case 'map':
       return <Ionicons name="map-outline" size={size} color={color} style={style} />;
     case 'eye':
@@ -114,6 +137,7 @@ export const Icon: React.FC<IconProps> = ({
     case 'swap':
       return <Ionicons name="swap-horizontal" size={size} color={color} style={style} />;
     case 'upload':
+    case 'cloud-upload':
       return <Ionicons name="cloud-upload-outline" size={size} color={color} style={style} />;
     case 'download':
       return <Ionicons name="download-outline" size={size} color={color} style={style} />;

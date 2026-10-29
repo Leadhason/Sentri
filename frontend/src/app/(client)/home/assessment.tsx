@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
   },
   typeChipActive: {
     borderColor: Colors.gold,
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    backgroundColor: Colors.badgeBg,
   },
   chipText: {
     fontSize: 12,
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
   },
   subChipActive: {
     borderColor: Colors.gold,
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    backgroundColor: Colors.badgeBg,
   },
   textAreaBox: {
     backgroundColor: Colors.surfaceElevated,

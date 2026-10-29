@@ -1,0 +1,20 @@
+# Gradle cache and local builds
+.gradle/
+build/
+
+# Local environment variables & secrets
+.env
+*.env
+.env.*
+
+# Git and editor metadata
+.git/
+.gitignore
+.gitattributes
+.idea/
+*.iml
+.vscode/
+
+# Documentation and scratch files
+spec.md
+*.log

@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Colors, Spacing } from '@/constants/theme';
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { Colors, Spacing, Radius, Shadows } from '@/constants/theme';
 import { SentriText } from './SentriText';
 import { Icon } from './Icon';
 
@@ -21,13 +21,19 @@ export const DispatchTicket: React.FC<DispatchTicketProps> = ({
   location,
   timeRange,
   statusTag,
-  statusColor = Colors.gold,
+  statusColor = Colors.primary,
   priceTag,
   onPress,
 }) => {
+  const isWeb = Platform.OS === 'web';
+
   return (
     <TouchableOpacity
-      style={[styles.ticketContainer, { borderLeftColor: statusColor }]}
+      style={[
+        styles.ticketContainer,
+        { borderLeftColor: statusColor },
+        isWeb ? ({ backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' } as any) : {},
+      ]}
       onPress={onPress}
       activeOpacity={0.8}
     >
@@ -38,8 +44,8 @@ export const DispatchTicket: React.FC<DispatchTicketProps> = ({
               {title}
             </SentriText>
             {statusTag && (
-              <View style={[styles.pill, { backgroundColor: `${statusColor}20`, borderColor: statusColor }]}>
-                <SentriText variant="monoSmall" color={statusColor} style={styles.pillText}>
+              <View style={styles.pill}>
+                <SentriText variant="monoSmall" style={styles.pillText}>
                   {statusTag}
                 </SentriText>
               </View>
@@ -75,7 +81,7 @@ export const DispatchTicket: React.FC<DispatchTicketProps> = ({
 
         <View style={styles.rightAction}>
           {priceTag ? (
-            <SentriText variant="mono" color={Colors.gold} style={styles.priceText}>
+            <SentriText variant="mono" color={Colors.primaryDark} style={styles.priceText}>
               {priceTag}
             </SentriText>
           ) : (
@@ -93,9 +99,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.border,
     borderLeftWidth: 4,
-    borderRadius: 8,
+    borderRadius: Radius.lg, // Rounded 18px
     padding: Spacing.md,
     marginVertical: Spacing.xs,
+    ...Shadows.card,
   },
   contentRow: {
     flexDirection: 'row',
@@ -115,17 +122,23 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 16,
     flex: 1,
+    fontWeight: '700',
+    color: Colors.text,
   },
   pill: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 9999, // Green Pill Badge
+    backgroundColor: Colors.badgeBg,
     borderWidth: 1,
+    borderColor: Colors.badgeBorder,
     marginLeft: Spacing.xs,
   },
   pillText: {
     fontSize: 10,
     fontWeight: '700',
+    color: Colors.badgeText,
+    letterSpacing: 0.5,
   },
   subtitleText: {
     fontSize: 13,

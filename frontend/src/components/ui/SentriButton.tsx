@@ -8,7 +8,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { Colors, Spacing, Fonts } from '@/constants/theme';
+import { Colors, Spacing, Fonts, Radius } from '@/constants/theme';
 import { SentriText } from './SentriText';
 import { Icon, IconName } from './Icon';
 
@@ -45,40 +45,55 @@ export const SentriButton: React.FC<SentriButtonProps> = ({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 8,
+      borderRadius: Radius.md, // Rounded 14px
       paddingHorizontal: Spacing.md,
     };
 
     // Size
     switch (size) {
       case 'sm':
-        base.height = 38;
+        base.height = 40;
         base.paddingHorizontal = Spacing.sm;
+        base.borderRadius = Radius.sm;
         break;
       case 'md':
-        base.height = 48;
+        base.height = 50;
         base.paddingHorizontal = Spacing.md;
+        base.borderRadius = Radius.md;
         break;
       case 'lg':
         base.height = 56;
         base.paddingHorizontal = Spacing.lg;
+        base.borderRadius = Radius.lg;
         break;
     }
 
     // Variant
     switch (variant) {
       case 'primary':
-        base.backgroundColor = disabled ? '#5C441E' : Colors.gold;
+        base.backgroundColor = disabled ? '#CBD5E1' : Colors.primary;
+        if (!disabled) {
+          base.shadowColor = Colors.primary;
+          base.shadowOffset = { width: 0, height: 3 };
+          base.shadowOpacity = 0.22;
+          base.shadowRadius = 8;
+          base.elevation = 3;
+        }
         break;
       case 'secondary':
-        base.backgroundColor = Colors.surfaceElevated;
+        base.backgroundColor = Colors.surfaceSolid;
         base.borderWidth = 1;
         base.borderColor = Colors.border;
+        base.shadowColor = '#64748B';
+        base.shadowOffset = { width: 0, height: 1 };
+        base.shadowOpacity = 0.05;
+        base.shadowRadius = 4;
+        base.elevation = 1;
         break;
       case 'outline':
         base.backgroundColor = 'transparent';
         base.borderWidth = 1.5;
-        base.borderColor = Colors.gold;
+        base.borderColor = Colors.primary;
         break;
       case 'danger':
         base.backgroundColor = Colors.danger;
@@ -96,18 +111,18 @@ export const SentriButton: React.FC<SentriButtonProps> = ({
   };
 
   const getTextColor = (): string => {
-    if (disabled && variant === 'primary') return '#8A7352';
+    if (disabled) return '#94A3B8';
     switch (variant) {
       case 'primary':
-        return '#0E141C'; // Dark text on gold
+        return '#FFFFFF'; // Clean white on green
       case 'secondary':
         return Colors.text;
       case 'outline':
-        return Colors.gold;
+        return Colors.primaryDark;
       case 'danger':
-        return Colors.text;
+        return '#FFFFFF';
       case 'ghost':
-        return Colors.gold;
+        return Colors.primaryDark;
       default:
         return Colors.text;
     }
@@ -139,8 +154,7 @@ export const SentriButton: React.FC<SentriButtonProps> = ({
               {
                 color: textColor,
                 fontFamily: Fonts.titleBold,
-                letterSpacing: 1.5,
-                textTransform: 'uppercase',
+                letterSpacing: 1,
                 fontSize: size === 'sm' ? 12 : size === 'lg' ? 15 : 13,
               },
               textStyle || {},

@@ -51,6 +51,10 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+tasks.named('jar') {
+	enabled = false
+}
+
 def loadDotEnv = { task ->
 	if (file(".env").exists()) {
 		file(".env").readLines().each { line ->

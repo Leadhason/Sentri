@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TouchableOpacity, TouchableOpacityProps } from 'react-native';
-import { Colors, Spacing } from '@/constants/theme';
+import { View, StyleSheet, ViewStyle, TouchableOpacity, TouchableOpacityProps, Platform } from 'react-native';
+import { Colors, Spacing, Radius, Shadows } from '@/constants/theme';
 
 interface TacticalCardProps extends TouchableOpacityProps {
   accentColor?: string;
@@ -22,12 +22,20 @@ export const TacticalCard: React.FC<TacticalCardProps> = ({
   interactive = false,
   ...props
 }) => {
+  const isWeb = Platform.OS === 'web';
+
+  const cardStyle: ViewStyle = {
+    backgroundColor,
+    borderColor,
+    ...(accentColor ? { borderLeftWidth: 4, borderLeftColor: accentColor } : {}),
+    ...(isWeb ? ({ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' } as any) : {}),
+  };
+
   const content = (
     <View
       style={[
         styles.card,
-        { backgroundColor, borderColor },
-        accentColor ? { borderLeftWidth: 4, borderLeftColor: accentColor } : null,
+        cardStyle,
         style,
       ]}
     >
@@ -48,10 +56,11 @@ export const TacticalCard: React.FC<TacticalCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 8,
+    borderRadius: Radius.lg, // Rounded 18px
     borderWidth: 1,
     padding: Spacing.md,
     marginVertical: Spacing.xs,
     overflow: 'hidden',
+    ...Shadows.card,
   },
 });

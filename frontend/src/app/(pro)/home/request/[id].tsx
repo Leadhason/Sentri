@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: Colors.gold,
-    backgroundColor: 'rgba(240, 167, 59, 0.12)',
+    backgroundColor: Colors.badgeBg,
   },
   detailCard: {
     marginBottom: Spacing.lg,

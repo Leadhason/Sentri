@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, Shadows } from '@/constants/theme';
 import { SentriText } from './SentriText';
 import { Icon, IconName } from './Icon';
 
@@ -61,7 +61,7 @@ export const SentriHeader: React.FC<SentriHeaderProps> = ({
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: Colors.surface,
+    backgroundColor: Colors.background,
   },
   headerBar: {
     height: 60,
@@ -69,31 +69,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.md,
-    backgroundColor: Colors.surface,
+    backgroundColor: Colors.background,
   },
   iconBtn: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Colors.surfaceElevated,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: Colors.surfaceSolid,
     borderWidth: 1,
     borderColor: Colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Shadows.subtle,
   },
   iconBtnPlaceholder: {
     width: 40,
+    height: 40,
   },
   titleContainer: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   brandTitle: {
-    fontSize: 18,
-    letterSpacing: 4,
-    color: Colors.gold,
-    fontWeight: '700',
-    textTransform: 'uppercase',
+    color: Colors.text,
+    letterSpacing: 2,
+    fontWeight: '800',
   },
 });

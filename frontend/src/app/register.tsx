@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   activeSegmentBtn: {
-    backgroundColor: 'rgba(240, 167, 59, 0.15)',
+    backgroundColor: Colors.badgeBg,
     borderWidth: 1,
     borderColor: Colors.gold,
   },

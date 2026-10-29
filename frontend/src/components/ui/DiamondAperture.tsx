@@ -21,7 +21,7 @@ export const DiamondAperture: React.FC<DiamondApertureProps> = ({
   pulsing = true,
   floating = true,
   filled = true,
-  color = Colors.gold,
+  color = Colors.primary,
   statusText,
 }) => {
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -55,7 +55,7 @@ export const DiamondAperture: React.FC<DiamondApertureProps> = ({
       floatAnimation = Animated.loop(
         Animated.sequence([
           Animated.timing(floatAnim, {
-            toValue: -5, // Subtle, smooth vertical drift (not bouncy)
+            toValue: -5,
             duration: 2600,
             easing: Easing.inOut(Easing.sin),
             useNativeDriver: true,
@@ -87,7 +87,7 @@ export const DiamondAperture: React.FC<DiamondApertureProps> = ({
         { transform: [{ translateY: floatAnim }] },
       ]}
     >
-      {/* Outer Sharp Diamond Ring */}
+      {/* Outer Rounded Diamond Ring */}
       <Animated.View
         style={[
           styles.diamondRing,
@@ -101,20 +101,20 @@ export const DiamondAperture: React.FC<DiamondApertureProps> = ({
         ]}
       />
 
-      {/* Inner Thin Sharp Cutout */}
+      {/* Inner Cutout */}
       <View
         style={[
           styles.innerDiamond,
           {
             width: innerSize * 0.76,
             height: innerSize * 0.76,
-            borderColor: filled ? '#0E141C' : 'rgba(240, 167, 59, 0.5)',
-            backgroundColor: filled ? '#0E141C' : 'transparent',
+            borderColor: filled ? Colors.background : 'rgba(22, 163, 74, 0.4)',
+            backgroundColor: filled ? Colors.background : 'transparent',
             transform: [{ rotate: '45deg' }],
           },
         ]}
       >
-        {/* Core Center Sharp Diamond */}
+        {/* Core Center Rounded Diamond */}
         {filled && (
           <View
             style={[
@@ -134,7 +134,7 @@ export const DiamondAperture: React.FC<DiamondApertureProps> = ({
         {showValue && (
           <SentriText
             variant="h1"
-            style={[styles.scoreText, { color: filled ? Colors.gold : color, fontSize: size * 0.28 }]}
+            style={[styles.scoreText, { color: filled ? Colors.primaryDark : color, fontSize: size * 0.28 }]}
           >
             {value}
           </SentriText>
@@ -157,23 +157,23 @@ const styles = StyleSheet.create({
   },
   diamondRing: {
     position: 'absolute',
-    borderWidth: 1.5, // Thinner, razor-sharp edge
-    borderRadius: 1, // Sharp corners
-    shadowColor: Colors.gold,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
-    elevation: 8,
+    borderWidth: 1.5,
+    borderRadius: 8, // Rounded aperture corners
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
   innerDiamond: {
     position: 'absolute',
-    borderWidth: 1, // Thin inner cut
-    borderRadius: 1, // Sharp corners
+    borderWidth: 1,
+    borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
   centerSolidDiamond: {
-    borderRadius: 0, // Sharp square/diamond core
+    borderRadius: 4,
   },
   centerContent: {
     alignItems: 'center',
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   scoreText: {
-    fontWeight: '700',
+    fontWeight: '800',
     letterSpacing: -1,
   },
   statusLabel: {

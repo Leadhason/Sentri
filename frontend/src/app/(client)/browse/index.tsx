@@ -241,8 +241,8 @@ export default function BrowseProfessionalsScreen() {
                       </SentriText>
                       {isVerified && (
                         <View style={styles.verifiedBadge}>
-                          <Icon name="shield-checkmark" size={14} color={Colors.gold} />
-                          <SentriText variant="caption" color={Colors.gold} style={styles.verifiedText}>
+                          <Icon name="shield-checkmark" size={13} color={Colors.badgeText} />
+                          <SentriText variant="caption" color={Colors.badgeText} style={styles.verifiedText}>
                             VERIFIED
                           </SentriText>
                         </View>
@@ -421,16 +421,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: 'rgba(240, 167, 59, 0.12)',
+    backgroundColor: Colors.badgeBg,
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: 4,
+    borderRadius: 9999,
     borderWidth: 1,
-    borderColor: 'rgba(240, 167, 59, 0.3)',
+    borderColor: Colors.badgeBorder,
   },
   verifiedText: {
     fontSize: 9,
     fontWeight: '700',
+    color: Colors.badgeText,
   },
   specText: {
     fontSize: 11,
